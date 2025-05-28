@@ -1,52 +1,42 @@
-Sistema de Gestão de Academias 🏋️
+
+# Sistema de Gestão de Academias 🏋️
+
 Sistema web para gestão administrativa e operacional de academias. Desenvolvido como projeto acadêmico na disciplina de Arquitetura de Software na UNIRV.
 
-🚀 Funcionalidades
-Cadastro e gerenciamento de membros (CRUD)
+## 🚀 Funcionalidades
 
-Cadastro e gerenciamento de profissionais (CRUD)
+- Cadastro e gerenciamento de membros (CRUD)
+- Cadastro e gerenciamento de profissionais (CRUD)
+- Controle financeiro: registro de mensalidades, receita e inadimplência
+- Gestão de frequência com gráficos por horário e dia da semana
+- Calendário de eventos com agendamento e visualização
+- Painel estatístico (dashboard) com indicadores e gráficos
+- Configuração do sistema e gerenciamento de usuários
+- Autenticação com diferentes níveis de acesso
+- Layout responsivo para desktop, tablet e smartphone
 
-Controle financeiro: registro de mensalidades, receita e inadimplência
+## 🛠️ Tecnologias Utilizadas
 
-Gestão de frequência com gráficos por horário e dia da semana
+### Front-end
+- HTML
+- CSS
+- JavaScript
+- Bootstrap
 
-Calendário de eventos com agendamento e visualização
+### Back-end
+- Node.js
+- Express.js
 
-Painel estatístico (dashboard) com indicadores e gráficos
+### Banco de Dados
+- PostgreSQL (via Supabase ou local)
 
-Configuração do sistema e gerenciamento de usuários
+### Deploy
+- Vercel (Front-end)
+- Render ou ambiente local (Back-end)
 
-Autenticação com diferentes níveis de acesso
+## 📁 Estrutura do Projeto
 
-Layout responsivo para desktop, tablet e smartphone
-
-🛠️ Tecnologias Utilizadas
-Front-end
-HTML
-
-CSS
-
-JavaScript
-
-Bootstrap
-
-Back-end
-Node.js
-
-Express.js
-
-Banco de Dados
-PostgreSQL (via Supabase ou local)
-
-Deploy
-Vercel (Front-end)
-
-Render ou ambiente local (Back-end)
-
-📁 Estrutura do Projeto
-csharp
-Copiar
-Editar
+```
 academia-system/
 ├── public/               # Arquivos estáticos (HTML, CSS, JS)
 ├── controllers/          # Lógica de controle (MVC)
@@ -57,62 +47,61 @@ academia-system/
 ├── services/             # Integração com Supabase ou banco local
 ├── app.js                # Arquivo principal do Express
 └── config.js             # Configurações e variáveis de ambiente
-🔐 Autenticação
-Utiliza JWT (JSON Web Token)
+```
 
-Tokens armazenados em localStorage
+## 🔐 Autenticação
 
-Rotas protegidas por verificação de token
+- Utiliza JWT (JSON Web Token)
+- Tokens armazenados em localStorage
+- Rotas protegidas por verificação de token
+- Perfis distintos: Administrador, Recepcionista, Instrutor
 
-Perfis distintos: Administrador, Recepcionista, Instrutor
+## ▶️ Como Executar Localmente
 
-▶️ Como Executar Localmente
-Clone o repositório:
+1. Clone o repositório:
 
-bash
-Copiar
-Editar
+```bash
 git clone https://github.com/seuusuario/academia-system.git
-Instale as dependências:
+```
 
-bash
-Copiar
-Editar
+2. Instale as dependências:
+
+```bash
 npm install
-Configure as variáveis de ambiente em um arquivo .env:
+```
 
-env
-Copiar
-Editar
+3. Configure as variáveis de ambiente em um arquivo `.env`:
+
+```env
 DATABASE_URL=...
 JWT_SECRET=...
-Inicie o servidor:
+```
 
-bash
-Copiar
-Editar
+4. Inicie o servidor:
+
+```bash
 node app.js
-Acesse:
-http://localhost:5000
+```
 
-📦 Deploy
-Front-end hospedado no Vercel.
+5. Acesse:  
+[http://localhost:5000](http://localhost:5000)
 
-Back-end executado localmente ou implantado no Render.
+## 📦 Deploy
 
-👨‍🎓 Projeto Acadêmico
-Este projeto foi desenvolvido como parte da disciplina de Arquitetura de Software, do curso de Engenharia de Software da UNIRV.
+- Front-end hospedado no Vercel.  
+- Back-end executado localmente ou implantado no Render.
 
-📈 Melhorias Futuras
-Geração de relatórios financeiros em PDF
+## 👨‍🎓 Projeto Acadêmico
 
-Notificações automáticas via e-mail
+Este projeto foi desenvolvido como parte da disciplina de **Arquitetura de Software**, do curso de **Engenharia de Software** da **UNIRV**.
 
-Integração com métodos de pagamento
+## 📈 Melhorias Futuras
 
-Módulo de treinos personalizados
+- Geração de relatórios financeiros em PDF  
+- Notificações automáticas via e-mail  
+- Integração com métodos de pagamento  
+- Módulo de treinos personalizados  
+- Suporte a múltiplas unidades de academias  
 
-Suporte a múltiplas unidades de academias
-
-Desenvolvido como um MVP funcional e didático.
+**Desenvolvido como um MVP funcional e didático.**  
 Contribuições e feedbacks são bem-vindos!
