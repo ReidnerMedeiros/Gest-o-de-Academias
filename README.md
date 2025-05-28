@@ -54,7 +54,7 @@ academia-system/
 - Utiliza JWT (JSON Web Token)
 - Tokens armazenados em localStorage
 - Rotas protegidas por verificação de token
-- Perfis distintos: Administrador, Recepcionista, Instrutor
+- Perfis distintos: Administrador/Gestor, Aluno, Instrutor
 
 ## ▶️ Como Executar Localmente
 
