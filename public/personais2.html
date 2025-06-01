@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Personais - Fitness Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+  <style>
+    body { background-color: #f8f9fa; }
+    .sidebar { height: 100vh; background-color: #fff; border-right: 1px solid #dee2e6; }
+    .sidebar .nav-link.active { background-color: #f26522; color: #fff !important; border-radius: .375rem; }
+    .sidebar .nav-link { color: #000; }
+    .table-avatar img { width: 40px; height: 40px; border-radius: 50%; }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <nav class="col-md-2 d-md-block sidebar p-3">
+      <div class="text-center mb-4">
+        <h4 class="fw-bold">FITNESS</h4>
+      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-house"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="membros2.html"><i class="bi bi-people-fill"></i> Membros</a></li>
+        <li class="nav-item"><a class="nav-link active" href="personais2.html"><i class="bi bi-person-lines-fill"></i> Personais</a></li>
+        <li class="nav-item"><a class="nav-link" href="calendario.html"><i class="bi bi-calendar-event"></i> Calendário</a></li>
+        <li class="nav-item"><a class="nav-link" href="pagamentos.html"><i class="bi bi-currency-dollar"></i> Pagamentos</a></li>
+        <li class="nav-item"><a class="nav-link" href="configuracao.html"><i class="bi bi-gear"></i> Configuração</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="login2.html"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="col-md-10 ms-sm-auto px-4">
+      <div class="d-flex justify-content-between align-items-center mt-4">
+        <h2>Personais</h2>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalAdicionar">
+            <i class="bi bi-person-plus"></i> Adicionar Personal
+          </button>
+          <button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modalAtualizar">
+            <i class="bi bi-pencil-square"></i> Atualizar Personal
+          </button>
+          <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalRemover">
+            <i class="bi bi-person-dash"></i> Remover Personal
+          </button>
+        </div>
+      </div>
+
+      <p class="mt-3">Total de Personais Registrados: <strong>0</strong></p>
+
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Idade</th>
+            <th>Sexo</th>
+            <th>Email</th>
+            <th>Modalidade</th>
+            <th>Horários</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- Conteúdo será carregado via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Modal Adicionar -->
+<div class="modal fade" id="modalAdicionar" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Adicionar Personal</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-2"><label class="form-label">Nome</label><input type="text" class="form-control" name="nome" required></div>
+          <div class="mb-2"><label class="form-label">Idade</label><input type="number" class="form-control" name="idade" required></div>
+          <div class="mb-2"><label class="form-label">Sexo</label>
+            <select class="form-select" name="sexo" required><option>Feminino</option><option>Masculino</option></select>
+          </div>
+          <div class="mb-2"><label class="form-label">Email</label><input type="email" class="form-control" name="email" required></div>
+          <div class="mb-2"><label class="form-label">Modalidade</label><input type="text" class="form-control" name="modalidade" required></div>
+          <div class="mb-2"><label class="form-label">Horários</label><input type="text" class="form-control" name="horarios" required></div>
+          <button type="submit" class="btn btn-success mt-2">Salvar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Atualizar -->
+<div class="modal fade" id="modalAtualizar" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Atualizar Personal</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <form id="formAtualizar">
+          <div class="mb-2"><label class="form-label">Nome</label><input type="text" class="form-control" name="nome" required></div>
+          <div class="mb-2"><label class="form-label">Email</label><input type="email" class="form-control" name="email" required></div>
+          <div id="dadosAtuais" class="d-none mt-3">
+            <div class="mb-2"><label class="form-label">Idade</label><input type="number" class="form-control" name="idade" required></div>
+            <div class="mb-2"><label class="form-label">Sexo</label>
+              <select class="form-select" name="sexo" required><option>Feminino</option><option>Masculino</option></select>
+            </div>
+            <div class="mb-2"><label class="form-label">Modalidade</label><input type="text" class="form-control" name="modalidade" required></div>
+            <div class="mb-2"><label class="form-label">Horários</label><input type="text" class="form-control" name="horarios" required></div>
+          </div>
+          <button type="submit" class="btn btn-warning mt-2">Atualizar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Remover -->
+<div class="modal fade" id="modalRemover" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Remover Personal</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-2"><label class="form-label">Nome</label><input type="text" class="form-control" name="nome" required></div>
+          <div class="mb-2"><label class="form-label">Email</label><input type="email" class="form-control" name="email" required></div>
+          <button type="submit" class="btn btn-danger mt-2">Remover</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  const apiBaseUrl = 'http://localhost:3000/api/personais';
+
+  // Função para carregar os personais na tabela
+  async function carregarPersonais() {
+    const response = await fetch(apiBaseUrl);
+    const personais = await response.json();
+    const tbody = document.querySelector('tbody');
+    tbody.innerHTML = '';
+
+    personais.forEach(p => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${p.nome}</td>
+        <td>${p.idade}</td>
+        <td>${p.sexo}</td>
+        <td>${p.email}</td>
+        <td>${p.modalidade}</td>
+        <td>${p.horarios}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Atualiza o total
+    document.querySelector('p strong').textContent = personais.length;
+  }
+
+  carregarPersonais();
+
+  // Adicionar Personal
+  document.querySelector('#modalAdicionar form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = {
+      nome: form.nome.value,
+      idade: Number(form.idade.value),
+      sexo: form.sexo.value,
+      email: form.email.value,
+      modalidade: form.modalidade.value,
+      horarios: form.horarios.value
+    };
+
+    const response = await fetch(apiBaseUrl, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+
+    if (response.ok) {
+      alert('Personal adicionado com sucesso!');
+      carregarPersonais();
+      form.reset();
+      bootstrap.Modal.getInstance(document.getElementById('modalAdicionar')).hide();
+    } else {
+      const err = await response.json();
+      alert('Erro: ' + err.error);
+    }
+  });
+
+  // Atualizar Personal
+  const formAtualizar = document.getElementById('formAtualizar');
+  const dadosAtuais = document.getElementById('dadosAtuais');
+
+  // Ao digitar o email, busca dados atuais
+  formAtualizar.email.addEventListener('blur', async () => {
+    const email = formAtualizar.email.value.trim();
+    if (!email) {
+      dadosAtuais.classList.add('d-none');
+      return;
+    }
+    const response = await fetch(`${apiBaseUrl}/${email}`);
+    if (response.ok) {
+      const p = await response.json();
+      formAtualizar.nome.value = p.nome;
+      formAtualizar.idade.value = p.idade;
+      formAtualizar.sexo.value = p.sexo;
+      formAtualizar.modalidade.value = p.modalidade;
+      formAtualizar.horarios.value = p.horarios;
+      dadosAtuais.classList.remove('d-none');
+    } else {
+      alert('Personal não encontrado');
+      dadosAtuais.classList.add('d-none');
+    }
+  });
+
+  formAtualizar.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = {
+      nome: formAtualizar.nome.value,
+      idade: Number(formAtualizar.idade.value),
+      sexo: formAtualizar.sexo.value,
+      modalidade: formAtualizar.modalidade.value,
+      horarios: formAtualizar.horarios.value
+    };
+    const email = formAtualizar.email.value.trim();
+
+    const response = await fetch(`${apiBaseUrl}/${email}`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+
+    if (response.ok) {
+      alert('Personal atualizado com sucesso!');
+      carregarPersonais();
+      formAtualizar.reset();
+      dadosAtuais.classList.add('d-none');
+      bootstrap.Modal.getInstance(document.getElementById('modalAtualizar')).hide();
+    } else {
+      const err = await response.json();
+      alert('Erro: ' + err.error);
+    }
+  });
+
+  // Remover Personal
+  document.querySelector('#modalRemover form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value.trim();
+
+    const confirma = confirm('Tem certeza que deseja remover este personal?');
+    if (!confirma) return;
+
+    const response = await fetch(`${apiBaseUrl}/${email}`, {
+      method: 'DELETE'
+    });
+
+    if (response.ok) {
+      alert('Personal removido!');
+      carregarPersonais();
+      e.target.reset();
+      bootstrap.Modal.getInstance(document.getElementById('modalRemover')).hide();
+    } else {
+      const erro = await response.json();
+      alert('Erro: ' + erro.error);
+    }
+  });
+</script>
+
+</body>
+</html>
