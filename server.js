@@ -5,6 +5,8 @@ const path = require('path');
 
 const membrosController = require('./controllers/membrosController');
 const personaisController = require('./controllers/personaisController');
+const pagamentosController = require('./controllers/pagamentosController');
+const calendarioController = require('./controllers/calendarioController');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,7 +18,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Rotas membros (como já está funcionando)
 app.use('/api/membros', membrosController);
 app.use('/api/personais', personaisController);
-
+app.use('/api/pagamentos', pagamentosController);
+app.use('/api/eventos', calendarioController);
 
 app.get('/', (req, res) => {
   res.send('API Fitness funcionando!');

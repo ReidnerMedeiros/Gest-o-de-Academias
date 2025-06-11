@@ -25,12 +25,13 @@
       </div>
       <ul class="nav flex-column">
         <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-house"></i> Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" href="membros2.html"><i class="bi bi-people-fill"></i> Membros</a></li>
-        <li class="nav-item"><a class="nav-link active" href="personais2.html"><i class="bi bi-person-lines-fill"></i> Personais</a></li>
+        <li class="nav-item"><a class="nav-link" href="membros.html"><i class="bi bi-people-fill"></i> Membros</a></li>
+        <li class="nav-item"><a class="nav-link active" href="personais.html"><i class="bi bi-person-lines-fill"></i> Personais</a></li>
+        <li class="nav-item"><a class="nav-link" href="frequencia.html"><i class="bi bi-check-square"></i> Frequência</a></li>
         <li class="nav-item"><a class="nav-link" href="calendario.html"><i class="bi bi-calendar-event"></i> Calendário</a></li>
         <li class="nav-item"><a class="nav-link" href="pagamentos.html"><i class="bi bi-currency-dollar"></i> Pagamentos</a></li>
         <li class="nav-item"><a class="nav-link" href="configuracao.html"><i class="bi bi-gear"></i> Configuração</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="login2.html"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="login.html"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
       </ul>
     </nav>
 
@@ -40,13 +41,13 @@
         <h2>Personais</h2>
         <div class="d-flex gap-2">
           <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalAdicionar">
-            <i class="bi bi-person-plus"></i> Adicionar Personal
+            <i class="bi bi-person-plus"></i> Adicionar
           </button>
           <button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modalAtualizar">
-            <i class="bi bi-pencil-square"></i> Atualizar Personal
+            <i class="bi bi-pencil-square"></i> Atualizar
           </button>
           <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalRemover">
-            <i class="bi bi-person-dash"></i> Remover Personal
+            <i class="bi bi-person-dash"></i> Remover
           </button>
         </div>
       </div>
@@ -80,7 +81,7 @@
     <div class="modal-content">
       <div class="modal-header"><h5 class="modal-title">Adicionar Personal</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
       <div class="modal-body">
-        <form>
+        <form id="formAdicionar">
           <div class="mb-2"><label class="form-label">Nome</label><input type="text" class="form-control" name="nome" required></div>
           <div class="mb-2"><label class="form-label">Idade</label><input type="number" class="form-control" name="idade" required></div>
           <div class="mb-2"><label class="form-label">Sexo</label>
@@ -141,59 +142,70 @@
 <script>
   const apiBaseUrl = 'http://localhost:3000/api/personais';
 
-  // Função para carregar os personais na tabela
+  // Carregar e listar personais
   async function carregarPersonais() {
-    const response = await fetch(apiBaseUrl);
-    const personais = await response.json();
     const tbody = document.querySelector('tbody');
-    tbody.innerHTML = '';
+    const total = document.querySelector('p strong');
 
-    personais.forEach(p => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${p.nome}</td>
-        <td>${p.idade}</td>
-        <td>${p.sexo}</td>
-        <td>${p.email}</td>
-        <td>${p.modalidade}</td>
-        <td>${p.horarios}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-
-    // Atualiza o total
-    document.querySelector('p strong').textContent = personais.length;
+    try {
+      const response = await fetch(apiBaseUrl);
+      const personais = await response.json();
+      tbody.innerHTML = '';
+      personais.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${p.nome}</td>
+          <td>${p.idade || ''}</td>
+          <td>${p.sexo || ''}</td>
+          <td>${p.email}</td>
+          <td>${p.modalidade || ''}</td>
+          <td>${p.horarios || ''}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      total.textContent = personais.length;
+    } catch (error) {
+      console.error('Erro ao carregar personais:', error);
+    }
   }
 
   carregarPersonais();
 
-  // Adicionar Personal
-  document.querySelector('#modalAdicionar form').addEventListener('submit', async (e) => {
+  //  Adicionar Personal com feedback e atualização
+  const formAdicionar = document.getElementById('formAdicionar');
+  formAdicionar.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const form = e.target;
+
     const data = {
-      nome: form.nome.value,
-      idade: Number(form.idade.value),
-      sexo: form.sexo.value,
-      email: form.email.value,
-      modalidade: form.modalidade.value,
-      horarios: form.horarios.value
+      nome: formAdicionar.nome.value,
+      idade: Number(formAdicionar.idade.value),
+      sexo: formAdicionar.sexo.value,
+      email: formAdicionar.email.value,
+      modalidade: formAdicionar.modalidade.value,
+      horarios: formAdicionar.horarios.value
     };
 
-    const response = await fetch(apiBaseUrl, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data)
-    });
+    try {
+      const response = await fetch(apiBaseUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
 
-    if (response.ok) {
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error || 'Erro ao adicionar personal');
+      }
+
       alert('Personal adicionado com sucesso!');
-      carregarPersonais();
-      form.reset();
-      bootstrap.Modal.getInstance(document.getElementById('modalAdicionar')).hide();
-    } else {
-      const err = await response.json();
-      alert('Erro: ' + err.error);
+      await carregarPersonais();
+      formAdicionar.reset();
+
+      const modal = bootstrap.Modal.getInstance(document.getElementById('modalAdicionar'));
+      if (modal) modal.hide();
+
+    } catch (error) {
+      alert(error.message);
     }
   });
 
@@ -201,7 +213,6 @@
   const formAtualizar = document.getElementById('formAtualizar');
   const dadosAtuais = document.getElementById('dadosAtuais');
 
-  // Ao digitar o email, busca dados atuais
   formAtualizar.email.addEventListener('blur', async () => {
     const email = formAtualizar.email.value.trim();
     if (!email) {
@@ -257,8 +268,7 @@
     e.preventDefault();
     const email = e.target.email.value.trim();
 
-    const confirma = confirm('Tem certeza que deseja remover este personal?');
-    if (!confirma) return;
+    if (!confirm('Tem certeza que deseja remover este personal?')) return;
 
     const response = await fetch(`${apiBaseUrl}/${email}`, {
       method: 'DELETE'

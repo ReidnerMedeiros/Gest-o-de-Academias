@@ -5,57 +5,60 @@ require('dotenv').config();
 const router = express.Router();
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-const tabela = 'personais';
 
-// Buscar todos os personais
+// Buscar todos os pagamentos
 router.get('/', async (req, res) => {
-  const { data, error } = await supabase.from(tabela).select('*');
+  const { data, error } = await supabase.from('pagamentos').select('*');
   if (error) return res.status(500).json({ error: error.message });
   res.json(data);
 });
 
-// Buscar personal pelo email
+// Buscar pagamento por e-mail
 router.get('/:email', async (req, res) => {
   const { email } = req.params;
   const { data, error } = await supabase
-    .from(tabela)
+    .from('pagamentos')
     .select('*')
     .eq('email', email)
     .single();
 
-  if (error) return res.status(404).json({ error: 'Personal não encontrado.' });
+  if (error) return res.status(404).json({ error: 'Pagamento não encontrado.' });
   res.json(data);
 });
 
-// Adicionar personal
+// Adicionar pagamento
 router.post('/', async (req, res) => {
-  const { nome, idade, sexo, email, modalidade, horarios } = req.body;
+  const { nome, idade, sexo, email, tipoPagamento, valor, foto } = req.body;
   const { data, error } = await supabase
-    .from(tabela)
-    .insert([{ nome, idade, sexo, email, modalidade, horarios }]);
+    .from('pagamentos')
+    .insert([{ nome, idade, sexo, email, tipoPagamento, valor, foto }]);
+
   if (error) return res.status(500).json({ error: error.message });
-  res.json(data);
+  res.status(201).json(data);
 });
 
-// Atualizar personal
+// Atualizar pagamento
 router.put('/:email', async (req, res) => {
   const { email } = req.params;
-  const { nome, idade, sexo, modalidade, horarios } = req.body;
+  const { nome, idade, sexo, tipoPagamento, valor, foto } = req.body;
+
   const { data, error } = await supabase
-    .from(tabela)
-    .update({ nome, idade, sexo, modalidade, horarios })
+    .from('pagamentos')
+    .update({ nome, idade, sexo, tipoPagamento, valor, foto })
     .eq('email', email);
+
   if (error) return res.status(500).json({ error: error.message });
   res.json(data);
 });
 
-// Remover personal
+// Remover pagamento
 router.delete('/:email', async (req, res) => {
   const { email } = req.params;
   const { data, error } = await supabase
-    .from(tabela)
+    .from('pagamentos')
     .delete()
     .eq('email', email);
+
   if (error) return res.status(500).json({ error: error.message });
   res.json(data);
 });
