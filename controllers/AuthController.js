@@ -23,7 +23,7 @@ const login = async (req, res) => {
       return res.status(401).json({ mensagem: 'Email ou senha incorretos.', error: error.message });
     }
 
-    // 🟩 Gera token JWT local (opcional, se quiser usar junto com o Supabase)
+    //  Gera token JWT local (opcional, se quiser usar junto com o Supabase)
     const token = jwt.sign(
       { email: data.user.email, userId: data.user.id },
       JWT_SECRET,

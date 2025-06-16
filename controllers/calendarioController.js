@@ -3,58 +3,57 @@ const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 
 const router = express.Router();
-
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 // Buscar todos os eventos
 router.get('/', async (req, res) => {
   const { data, error } = await supabase
     .from('eventos')
-    .select('*')
+    .select(`
+      *,
+      membros ( nome ),
+      personais ( nome )
+    `)
     .order('data', { ascending: true });
+
+  if (error) return res.status(500).json({ error: error.message });
+
+  // Mapear para deixar os nomes no root do objeto
+  const mapped = data.map(ev => ({
+    ...ev,
+    membro_nome: ev.membros?.nome,
+    personal_nome: ev.personais?.nome
+  }));
+
+  res.json(mapped);
+});
+
+// Adicionar evento
+router.post('/', async (req, res) => {
+  const { data, titulo, horario, membro_id, personal_id } = req.body;
+  const { data: result, error } = await supabase
+    .from('eventos')
+    .insert([{ data, titulo, horario, membro_id, personal_id }]);
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(result);
+});
+
+// Atualizar evento
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { data: dateVal, titulo, horario, membro_id, personal_id } = req.body;
+
+  const { data, error } = await supabase
+    .from('eventos')
+    .update({ data: dateVal, titulo, horario, membro_id, personal_id })
+    .eq('id', id);
 
   if (error) return res.status(500).json({ error: error.message });
   res.json(data);
 });
 
-// Buscar eventos por data (YYYY-MM-DD)
-router.get('/:data', async (req, res) => {
-  const { data } = req.params;
-  const { data: eventos, error } = await supabase
-    .from('eventos')
-    .select('*')
-    .eq('data', data);
-
-  if (error) return res.status(500).json({ error: error.message });
-  res.json(eventos);
-});
-
-// Adicionar evento
-router.post('/', async (req, res) => {
-  const { data, titulo, horario } = req.body;
-  const { data: result, error } = await supabase
-    .from('eventos')
-    .insert([{ data, titulo, horario }]);
-
-  if (error) return res.status(500).json({ error: error.message });
-  res.json(result);
-});
-
-// Atualizar evento por ID
-router.put('/:id', async (req, res) => {
-  const { id } = req.params;
-  const { data, titulo, horario } = req.body;
-
-  const { data: result, error } = await supabase
-    .from('eventos')
-    .update({ data, titulo, horario })
-    .eq('id', id);
-
-  if (error) return res.status(500).json({ error: error.message });
-  res.json(result);
-});
-
-// Remover evento por ID
+// Remover evento
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 

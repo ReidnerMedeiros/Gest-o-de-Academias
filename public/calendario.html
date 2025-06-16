@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Calendário de Eventos - Fitness</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Versão correta do Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
     <style>
         body { background-color: #f8f9fa; }
@@ -38,6 +39,15 @@
           padding: 5px;
           position: relative;
           cursor: pointer;
+          overflow-y: auto;
+        }
+        .day.today {
+          background-color: #dff0d8 !important;
+          border: 2px solid #28a745;
+        }
+
+        .event.past {
+        background-color: #dc3545 !important;
         }
         .day:hover {
           background-color: #f0f0f0;
@@ -67,6 +77,7 @@
           color: white;
           font-size: 12px;
           line-height: 1;
+          cursor: pointer;
         }
     </style>
 </head>
@@ -101,98 +112,171 @@
                 <div class="d-flex flex-wrap" id="calendarDays"></div>
             </div>
 
-            <!-- Alerta de sucesso -->
             <div id="successAlert" class="alert alert-success mt-3 d-none" role="alert">
                 Evento adicionado com sucesso!
             </div>
         </main>
-    </div>
-</div>
 
-<!-- Modal de Evento -->
-<div class="modal fade" id="eventModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Adicionar Evento</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <input type="text" id="eventTitle" class="form-control mb-2" placeholder="Título do evento">
-                <input type="time" id="eventTime" class="form-control mb-2">
-                <input type="hidden" id="eventDate">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button class="btn btn-success" onclick="saveEvent()">Salvar</button>
+        <!-- Modal de Evento -->
+        <div class="modal fade" id="eventModal" tabindex="-1">
+            <div class="modal-dialog modal-lg"><!-- modal maior -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Eventos do Dia</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs mb-3" id="eventTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="add-event-tab" data-bs-toggle="tab" data-bs-target="#add-event" type="button" role="tab" aria-controls="add-event" aria-selected="true">Adicionar Evento</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="list-event-tab" data-bs-toggle="tab" data-bs-target="#list-event" type="button" role="tab" aria-controls="list-event" aria-selected="false">Eventos do Dia</button>
+                            </li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content" id="eventTabContent">
+                            <!-- Aba adicionar evento -->
+                            <div class="tab-pane fade show active" id="add-event" role="tabpanel" aria-labelledby="add-event-tab">
+                                <input type="text" id="eventTitle" class="form-control mb-2" placeholder="Título do evento" />
+                                <input type="time" id="eventTime" class="form-control mb-2" />
+                                <select id="eventMembro" class="form-control mb-2">
+                                    <option value="">Selecione o Membro</option>
+                                </select>
+                                <select id="eventPersonal" class="form-control mb-2">
+                                    <option value="">Selecione o Personal</option>
+                                </select>
+                                <input type="hidden" id="eventDate" />
+                            </div>
+
+                            <!-- Aba eventos do dia -->
+                            <div class="tab-pane fade" id="list-event" role="tabpanel" aria-labelledby="list-event-tab">
+                                <div id="eventsOfDayList" style="max-height: 300px; overflow-y: auto;">
+                                    <!-- Eventos do dia serão listados aqui -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-success" onclick="saveEvent()">Salvar</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    const calendarDays = document.getElementById('calendarDays');
-    const monthYear = document.getElementById('monthYear');
     let currentDate = new Date();
     let events = {};
 
-    async function loadEvents() {
-      try {
-        const res = await fetch('http://localhost:3000/api/eventos');
-        const data = await res.json();
-        events = {};
+    async function loadMembrosEPersonais() {
+      const [membrosRes, personaisRes] = await Promise.all([
+        fetch('http://localhost:3000/api/membros'),
+        fetch('http://localhost:3000/api/personais')
+      ]);
 
-        data.forEach(ev => {
-          const dateStr = ev.data;
-          if (!events[dateStr]) events[dateStr] = [];
-          events[dateStr].push({ id: ev.id, title: ev.titulo, time: ev.horario });
-        });
+      const membros = await membrosRes.json();
+      const personais = await personaisRes.json();
 
-        renderCalendar();
-      } catch (err) {
-        console.error('Erro ao carregar eventos:', err);
-      }
+      const membroSelect = document.getElementById('eventMembro');
+      const personalSelect = document.getElementById('eventPersonal');
+
+      membros.forEach(m => {
+        membroSelect.innerHTML += `<option value="${m.id}">${m.nome}</option>`;
+      });
+
+      personais.forEach(p => {
+        personalSelect.innerHTML += `<option value="${p.id}">${p.nome}</option>`;
+      });
     }
 
-    function renderCalendar() {
-      const year = currentDate.getFullYear();
-      const month = currentDate.getMonth();
+    async function loadEvents() {
+      const res = await fetch('http://localhost:3000/api/eventos');
+      const data = await res.json();
+      events = {};
 
-      const firstDay = new Date(year, month, 1).getDay();
-      const lastDate = new Date(year, month + 1, 0).getDate();
+      data.forEach(ev => {
+        const dateStr = ev.data;
+        if (!events[dateStr]) events[dateStr] = [];
+        events[dateStr].push(ev);
+      });
 
-      monthYear.innerText = currentDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-      calendarDays.innerHTML = '';
+      renderCalendar();
+    }
 
-      for (let i = 0; i < firstDay; i++) {
-        const empty = document.createElement('div');
-        empty.className = 'day';
-        calendarDays.appendChild(empty);
-      }
+function renderCalendar() {
+  const calendarDays = document.getElementById('calendarDays');
+  const monthYear = document.getElementById('monthYear');
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
 
-      for (let day = 1; day <= lastDate; day++) {
-        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const dayDiv = document.createElement('div');
-        dayDiv.className = 'day';
-        dayDiv.innerHTML = `<div class="day-number">${day}</div>`;
+  let firstDay = new Date(year, month, 1).getDay();
+  firstDay = (firstDay === 0) ? 6 : firstDay - 1;
 
-        if (events[dateStr]) {
-          events[dateStr].forEach(ev => {
-            const evDiv = document.createElement('div');
-            evDiv.className = 'event';
-            evDiv.innerHTML = `
-              ${ev.time} - ${ev.title}
-              <button onclick="deleteEvent(${ev.id})">&times;</button>
-            `;
-            dayDiv.appendChild(evDiv);
-          });
+  const lastDate = new Date(year, month + 1, 0).getDate();
+
+  monthYear.innerText = currentDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  calendarDays.innerHTML = '';
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // remove horas para comparação justa
+
+  // Dias em branco antes do início do mês
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'day';
+    calendarDays.appendChild(empty);
+  }
+
+  for (let day = 1; day <= lastDate; day++) {
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const dayDiv = document.createElement('div');
+    dayDiv.className = 'day';
+
+    // Verifica se é o dia de hoje
+    const thisDate = new Date(year, month, day);
+    thisDate.setHours(0, 0, 0, 0);
+    if (thisDate.getTime() === today.getTime()) {
+      dayDiv.classList.add('today');
+    }
+
+    dayDiv.innerHTML = `<div class="day-number">${day}</div>`;
+
+    if (events[dateStr]) {
+      events[dateStr].forEach(ev => {
+        const evDiv = document.createElement('div');
+        evDiv.className = 'event';
+
+        // Verifica se o evento está no passado
+        const eventDateTime = new Date(`${ev.data}T${ev.horario || "00:00"}`);
+        const now = new Date();
+
+        if (eventDateTime < now) {
+          evDiv.classList.add('past');
         }
 
-        dayDiv.onclick = () => openEventModal(dateStr);
-        calendarDays.appendChild(dayDiv);
-      }
+        evDiv.innerHTML = `
+          ${ev.horario || ''} - ${ev.titulo}<br>
+          Membro: ${ev.membro_nome || 'N/A'}<br>
+          Personal: ${ev.personal_nome || 'N/A'}
+          <button onclick="deleteEvent(${ev.id})" title="Excluir evento">&times;</button>
+        `;
+        dayDiv.appendChild(evDiv);
+      });
     }
+
+    dayDiv.onclick = () => openEventModal(dateStr);
+    calendarDays.appendChild(dayDiv);
+  }
+}
 
     function prevMonth() {
       currentDate.setMonth(currentDate.getMonth() - 1);
@@ -204,68 +288,101 @@
       renderCalendar();
     }
 
-    function openEventModal(date) {
-      document.getElementById('eventDate').value = date;
-      document.getElementById('eventTitle').value = '';
-      document.getElementById('eventTime').value = '';
-      new bootstrap.Modal(document.getElementById('eventModal')).show();
-    }
+function openEventModal(date) {
+  document.getElementById('eventDate').value = date;
+  document.getElementById('eventTitle').value = '';
+  document.getElementById('eventTime').value = '';
+  document.getElementById('eventMembro').value = '';
+  document.getElementById('eventPersonal').value = '';
+
+  loadEventsOfDay(date);
+
+  // Abrir a aba "Adicionar Evento" por padrão
+  const tabTriggerEl = document.querySelector('#add-event-tab');
+  const tab = new bootstrap.Tab(tabTriggerEl);
+  tab.show();
+
+  new bootstrap.Modal(document.getElementById('eventModal')).show();
+}
+
+function loadEventsOfDay(date) {
+  const eventsListDiv = document.getElementById('eventsOfDayList');
+  eventsListDiv.innerHTML = '';
+
+  if (!events[date] || events[date].length === 0) {
+    eventsListDiv.innerHTML = '<p>Não há eventos para este dia.</p>';
+    return;
+  }
+
+  // Listar eventos daquele dia
+  events[date].forEach(ev => {
+    const evDiv = document.createElement('div');
+    evDiv.className = 'mb-2 p-2 border rounded';
+
+    evDiv.innerHTML = `
+      <strong>${ev.horario || ''} - ${ev.titulo}</strong><br>
+      Membro: ${ev.membro_nome || 'N/A'}<br>
+      Personal: ${ev.personal_nome || 'N/A'}
+      <button class="btn btn-sm btn-danger float-end" onclick="deleteEvent(${ev.id})" title="Excluir evento">&times;</button>
+    `;
+
+    eventsListDiv.appendChild(evDiv);
+  });
+}
 
     async function saveEvent() {
       const date = document.getElementById('eventDate').value;
-      const title = document.getElementById('eventTitle').value;
+      const title = document.getElementById('eventTitle').value.trim();
       const time = document.getElementById('eventTime').value;
+      const membro_id = document.getElementById('eventMembro').value;
+      const personal_id = document.getElementById('eventPersonal').value;
 
-      try {
-        const response = await fetch('http://localhost:3000/api/eventos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ data: date, titulo: title, horario: time })
-        });
+      if (!title) {
+        alert('Por favor, preencha o título do evento.');
+        return;
+      }
 
-        if (!response.ok) {
-          const error = await response.json();
-          alert('Erro ao salvar evento: ' + error.error);
-          return;
-        }
+      const evento = {
+        data: date,
+        titulo: title,
+        horario: time,
+        membro_id,
+        personal_id
+      };
 
+      const res = await fetch('http://localhost:3000/api/eventos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(evento)
+      });
+
+      if (res.ok) {
+        document.getElementById('successAlert').classList.remove('d-none');
+        setTimeout(() => {
+          document.getElementById('successAlert').classList.add('d-none');
+        }, 3000);
         await loadEvents();
         bootstrap.Modal.getInstance(document.getElementById('eventModal')).hide();
-
-        const alertBox = document.getElementById('successAlert');
-        alertBox.classList.remove('d-none');
-        alertBox.classList.add('show');
-
-        setTimeout(() => {
-          alertBox.classList.add('d-none');
-          alertBox.classList.remove('show');
-        }, 3000);
-      } catch (err) {
-        console.error('Erro:', err);
+      } else {
+        alert('Erro ao salvar evento.');
       }
     }
 
-    async function deleteEvent(id) {
-      if (!confirm('Tem certeza que deseja remover este evento?')) return;
+async function deleteEvent(id) {
+  if (!confirm('Tem certeza que deseja excluir este evento?')) return;
+  const res = await fetch(`http://localhost:3000/api/eventos/${id}`, { method: 'DELETE' });
+  if (res.ok) {
+    await loadEvents();
+    const date = document.getElementById('eventDate').value;
+    loadEventsOfDay(date);
+  } else {
+    alert('Erro ao excluir evento.');
+  }
+}
 
-      try {
-        const res = await fetch(`http://localhost:3000/api/eventos/${id}`, {
-          method: 'DELETE'
-        });
-
-        if (!res.ok) {
-          const error = await res.json();
-          alert('Erro ao remover: ' + error.error);
-          return;
-        }
-
-        await loadEvents();
-      } catch (err) {
-        console.error('Erro ao deletar evento:', err);
-      }
-    }
-
-    window.addEventListener('DOMContentLoaded', loadEvents);
+    // Inicialização
+    loadMembrosEPersonais();
+    loadEvents();
 </script>
 </body>
 </html>
