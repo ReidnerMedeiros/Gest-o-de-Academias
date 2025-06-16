@@ -5,7 +5,7 @@
   "name": "gest-o-de-academias",
   "version": "1.0.0",
   "description": "Sistema web para gestão administrativa e operacional de academias. Desenvolvido como projeto acadêmico na disciplina de Arquitetura de Software na UNIRV.",
-  "main": "app.js",
+  "main": "server.js",
   "dependencies": {
     "@supabase/supabase-js": "^2.49.8",
     "ansi-escapes": "^4.3.2",
