@@ -63,6 +63,41 @@
       </div>
       <!-- Conteúdo principal -->
       <div class="main-content">
+        <form id="formPagamento"
+              class="row g-3 align-items-end mb-4">
+          <div class="col-md-4">
+            <label for="membroSelect"
+                   class="form-label">Membro</label>
+            <select id="membroSelect"
+                    class="form-select"
+                    required></select>
+          </div>
+          <div class="col-md-3">
+            <label for="formaPagamento"
+                   class="form-label">Forma de Pagamento</label>
+            <select id="formaPagamento"
+                    class="form-select"
+                    required>
+              <option value="Dinheiro">Dinheiro</option>
+              <option value="Cartão">Cartão</option>
+              <option value="Pix">Pix</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="valorPagamento"
+                   class="form-label">Valor (R$)</label>
+            <input type="number"
+                   min="0"
+                   step="0.01"
+                   id="valorPagamento"
+                   class="form-control"
+                   required />
+          </div>
+          <div class="col-md-2">
+            <button type="submit"
+                    class="btn btn-success w-100"><i class="bi bi-plus-circle"></i> Registrar Pagamento</button>
+          </div>
+        </form>
         <div class="table-responsive mt-3">
           <table class="table align-middle">
             <thead>

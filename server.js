@@ -12,6 +12,7 @@ const personaisController = require('./controllers/personaisController');
 const pagamentosController = require('./controllers/pagamentosController');
 const calendarioController = require('./controllers/calendarioController');
 const frequenciaController = require('./controllers/frequenciaController');
+const dashboardController = require('./controllers/dashboardController');
 
 // Instância do app
 const app = express();
@@ -29,6 +30,7 @@ app.use('/api/personais', personaisController);
 app.use('/api/pagamentos', pagamentosController);
 app.use('/api/eventos', calendarioController);
 app.use('/api/frequencia', frequenciaController);
+app.use('/api/dashboard', dashboardController);
 
 // Rota de teste
 app.get('/', (req, res) => {
