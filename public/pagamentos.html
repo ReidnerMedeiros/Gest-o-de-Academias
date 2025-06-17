@@ -1,136 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <title>Pagamentos - Fitness Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
-  <style>
-    body {
-      background-color: #f8f9fa;
-    }
-    .sidebar {
-      height: 100vh;
-      background-color: #fff;
-      border-right: 1px solid #dee2e6;
-    }
-    .sidebar .nav-link.active {
-      background-color: #f26522;
-      color: #fff !important;
-      border-radius: 0.375rem;
-    }
-    .sidebar .nav-link {
-      color: #000;
-    }
-    .table-avatar img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-    }
-  </style>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet" />
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+  <link rel="stylesheet"
+        href="css/pagamentos.css" />
 </head>
+
 <body>
-<div class="container-fluid">
-  <div class="row">
+  <div class="main-layout">
     <!-- Sidebar -->
-    <nav class="col-md-2 d-md-block sidebar p-3">
-      <div class="text-center mb-4">
-        <h4 class="fw-bold">FITNESS</h4>
+    <div class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png"
+               alt="Logo"
+               style="width:28px;height:28px;object-fit:contain;">
+        </div>
+        <div class="brand-text">FITNESS</div>
       </div>
-      <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-house"></i> Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" href="membros.html"><i class="bi bi-people-fill"></i> Membros</a></li>
-        <li class="nav-item"><a class="nav-link" href="personais.html"><i class="bi bi-person-lines-fill"></i> Personais</a></li>
-        <li class="nav-item"><a class="nav-link" href="frequencia.html"><i class="bi bi-check-square"></i> Frequência</a></li>
-        <li class="nav-item"><a class="nav-link" href="calendario.html"><i class="bi bi-calendar-event"></i> Calendário</a></li>
-        <li class="nav-item"><a class="nav-link active" href="pagamentos.html"><i class="bi bi-currency-dollar"></i> Pagamentos</a></li>
-        <li class="nav-item"><a class="nav-link" href="configuracao.html"><i class="bi bi-gear"></i> Configuração</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="login.html"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
-      </ul>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="col-md-10 ms-sm-auto px-4">
-      <div class="d-flex justify-content-between align-items-center mt-4">
-        <h2>Pagamentos</h2>
+      <nav class="sidebar-menu">
+        <a href="dashboard.html"
+           class="menu-item"><i class="bi bi-house"></i> Dashboard</a>
+        <a href="membros.html"
+           class="menu-item"><i class="bi bi-people-fill"></i> Membros</a>
+        <a href="personais.html"
+           class="menu-item"><i class="bi bi-person-lines-fill"></i> Personais</a>
+        <a href="calendario.html"
+           class="menu-item"><i class="bi bi-calendar-event"></i> Calendário</a>
+        <a href="pagamentos.html"
+           class="menu-item active"><i class="bi bi-currency-dollar"></i> Pagamentos</a>
+        <a href="configuracao.html"
+           class="menu-item"><i class="bi bi-gear"></i> Configuração</a>
+      </nav>
+      <div class="menu-logout">
+        <a href="login.html"
+           class="menu-item"><i class="bi bi-box-arrow-right"></i> Sair</a>
       </div>
-
-      <div class="table-responsive mt-3">
-        <table class="table align-middle">
-          <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Forma de Pagamento</th>
-            <th>Valor</th>
-          </tr>
-          </thead>
-          <tbody id="tabelaPagamentos">
-          <!-- Conteúdo carregado via JS -->
-          </tbody>
-        </table>
+    </div>
+    <!-- Área de conteúdo -->
+    <div class="content-area">
+      <!-- Header/Nav no topo -->
+      <div class="top-header">
+        <h1 class="page-title">Pagamentos</h1>
+        <div class="header-actions">
+          <button class="notification-btn">
+            <i class="bi bi-bell"></i>
+          </button>
+          <img src="https://randomuser.me/api/portraits/men/32.jpg"
+               alt="User Avatar"
+               class="user-avatar">
+        </div>
       </div>
+      <!-- Conteúdo principal -->
+      <div class="main-content">
+        <div class="table-responsive mt-3">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Forma de Pagamento</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaPagamentos">
+              <!-- Conteúdo carregado via JS -->
+            </tbody>
+          </table>
+        </div>
 
-      <div id="mensagemErro" class="alert alert-danger d-none"></div>
-    </main>
+        <div id="mensagemErro"
+             class="alert alert-danger d-none"></div>
+      </div>
+    </div>
   </div>
-</div>
 
-<script>
-  const API_URL = 'http://localhost:3000/api/pagamentos';
+  <script src="js/pagamentos.js"></script>
 
-  async function listarPagamentos() {
-    const tabela = document.getElementById('tabelaPagamentos');
-    const msgErro = document.getElementById('mensagemErro');
-    try {
-      const res = await fetch(API_URL);
-      if (!res.ok) throw new Error('Erro ao buscar dados');
-      const pagamentos = await res.json();
-      tabela.innerHTML = '';
-      pagamentos.forEach(pagamento => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>
-            <div class="d-flex align-items-center">
-              <img src="${pagamento.foto || 'https://via.placeholder.com/40'}" class="me-2 table-avatar" alt="Avatar">
-              ${pagamento.nome}
-            </div>
-          </td>
-          <td>${pagamento.idade}</td>
-          <td>${pagamento.sexo}</td>
-          <td><a href="mailto:${pagamento.email}">${pagamento.email}</a></td>
-          <td>${pagamento.tipoPagamento}</td>
-          <td>R$ ${parseFloat(pagamento.valor).toFixed(2)}</td>
-          <td>
-            <button class="btn btn-sm btn-danger" onclick="removerPagamento('${pagamento.email}')">
-              <i class="bi bi-trash"></i>
-            </button>
-          </td>
-        `;
-        tabela.appendChild(tr);
-      });
-      msgErro.classList.add('d-none');
-    } catch (error) {
-      msgErro.textContent = error.message;
-      msgErro.classList.remove('d-none');
-    }
-  }
-
-  async function removerPagamento(email) {
-    if (!confirm('Tem certeza que deseja remover este pagamento?')) return;
-    try {
-      const res = await fetch(`${API_URL}/${email}`, { method: 'DELETE' });
-      if (!res.ok) throw new Error('Erro ao remover pagamento');
-      listarPagamentos();
-    } catch (error) {
-      alert(error.message);
-    }
-  }
-
-  listarPagamentos();
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

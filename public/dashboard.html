@@ -1,240 +1,313 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
   <title>Dashboard Fitness</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
-  <style>
-    body {
-      background: #f8f9fa;
-    }
-    .sidebar {
-      height: 100vh;
-      background: #f26522;
-      color: white;
-    }
-    .sidebar a {
-      color: white;
-      text-decoration: none;
-    }
-    .sidebar a.active {
-      font-weight: bold;
-    }
-    .card-title {
-      font-size: 0.9rem;
-      color: #6c757d;
-    }
-    .fc {
-      background: white;
-      padding: 10px;
-      border-radius: 10px;
-    }
-    canvas {
-      max-width: 100%;
-    }
-  </style>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css"
+        rel="stylesheet">
+  <link rel="stylesheet"
+        href="css/dashboard.css">
 </head>
+
 <body>
 
-<div class="container-fluid">
-  <div class="row">
-
+  <div class="main-layout">
     <!-- Sidebar -->
-    <nav class="col-md-2 d-none d-md-block sidebar p-3">
-      <h4 class="mb-4">FITNESS</h4>
-      <ul class="nav flex-column">
-        <li class="nav-item mb-2">
-          <a class="nav-link active" href="dashboard.html">
-            <i class="bi bi-house"></i> Dashboard
-          </a>
-        </li>
-        <li class="nav-item mb-2">
-          <a class="nav-link" href="membros.html">
-            <i class="bi bi-people-fill"></i> Membros
-          </a>
-        </li>
-        <li class="nav-item mb-2">
-          <a class="nav-link" href="personais.html">
-            <i class="bi bi-person-lines-fill"></i> Personais
-          </a>
-        </li>
-        <li class="nav-item mb-2">
-          <a class="nav-link" href="frequencia.html">
-            <i class="bi bi-check-square"></i> Frequência
-          </a>
-        </li>
-        <li class="nav-item mb-2">
-          <a class="nav-link" href="calendario.html">
-            <i class="bi bi-calendar-event"></i> Calendário
-          </a>
-        </li>
-        <li class="nav-item mb-2">
-          <a class="nav-link" href="pagamentos.html">
-            <i class="bi bi-currency-dollar"></i> Pagamentos
-          </a>
-        </li>
-        <li class="nav-item mb-2">
-          <a class="nav-link" href="configuracao.html">
-            <i class="bi bi-gear"></i> Configuração
-          </a>
-        </li>
-        <li class="nav-item mt-4">
-          <a class="nav-link" href="login.html">
-            <i class="bi bi-box-arrow-right"></i> Sair
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <div class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png"
+               alt="Logo"
+               style="width:28px;height:28px;object-fit:contain;">
+        </div>
+        <div class="brand-text">FITNESS</div>
+      </div>
+      <nav class="sidebar-menu">
+        <a href="dashboard.html"
+           class="menu-item active"><i class="bi bi-house"></i> Dashboard</a>
+        <a href="membros.html"
+           class="menu-item"><i class="bi bi-people-fill"></i> Membros</a>
+        <a href="personais.html"
+           class="menu-item"><i class="bi bi-person-lines-fill"></i> Personais</a>
+        <a href="calendario.html"
+           class="menu-item"><i class="bi bi-calendar-event"></i> Calendário</a>
+        <a href="pagamentos.html"
+           class="menu-item"><i class="bi bi-currency-dollar"></i> Pagamentos</a>
+        <a href="configuracao.html"
+           class="menu-item"><i class="bi bi-gear"></i> Configuração</a>
+      </nav>
+      <div class="menu-logout">
+        <a href="login.html"
+           class="menu-item"><i class="bi bi-box-arrow-right"></i> Sair</a>
+      </div>
+    </div>
 
-    <!-- Main -->
-    <main class="col-md-10 ms-sm-auto px-4">
-      <h1 class="my-4">Dashboard</h1>
+    <!-- Content Area -->
+    <div class="content-area">
+      <!-- Top Header -->
+      <header class="top-header">
+        <h1 class="page-title">Dashboard</h1>
+        <div class="header-actions">
+          <button class="notification-btn">
+            <i class="bi bi-bell"></i>
+          </button>
+          <img src="https://randomuser.me/api/portraits/men/32.jpg"
+               alt="User Avatar"
+               class="user-avatar">
+        </div>
+      </header>
 
-      <!-- Status Cards -->
-      <div class="row">
-        <div class="col-md-4">
-          <div class="card mb-3">
-            <div class="card-body">
-              <h5 class="card-title">Novos Membros</h5>
-              <h3>12 <i class="bi bi-arrow-up text-success"></i></h3>
+      <!-- Dashboard Layout -->
+      <div class="dashboard-layout">
+        <!-- Main Content -->
+        <div class="main-content">
+          <!-- Stats Cards -->
+          <section class="stats-row">
+            <div class="stat-card">
+              <div class="stat-info">
+                <h6>Novos Membros</h6>
+                <div class="stat-value">
+                  12 <i class="bi bi-arrow-up trend-up"></i>
+                </div>
+              </div>
+              <div class="stat-icon">
+                <i class="bi bi-people"></i>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-info">
+                <h6>Receita</h6>
+                <div class="stat-value">
+                  R$893,00 <i class="bi bi-arrow-up trend-up"></i>
+                </div>
+              </div>
+              <div class="stat-icon">
+                <i class="bi bi-graph-up"></i>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-info">
+                <h6>Membros Ativos</h6>
+                <div class="stat-value">
+                  95 <i class="bi bi-arrow-up trend-up"></i>
+                </div>
+              </div>
+              <div class="stat-icon">
+                <i class="bi bi-people-fill"></i>
+              </div>
+            </div>
+          </section>
+
+          <!-- Progress Cards Row -->
+          <section class="progress-row">
+            <div class="progress-card">
+              <div class="progress-header">
+                <i class="bi bi-currency-dollar"></i>
+                <h3 class="progress-title">Receita Mensal</h3>
+              </div>
+              <div class="progress-amount">R$ 6.527,00</div>
+              <div class="progress-bar-container">
+                <div class="progress-fill"
+                     style="width: 65%"></div>
+              </div>
+              <div class="progress-meta">
+                <span>Meta para Abril</span>
+                <span>R$ 10.000</span>
+              </div>
+            </div>
+
+            <div class="progress-card">
+              <div class="progress-header">
+                <i class="bi bi-credit-card"></i>
+                <h3 class="progress-title">Mensalidades</h3>
+              </div>
+              <div class="progress-amount">95 <small style="font-size: 16px; color: #718096; font-weight: 400;">Em Dia</small></div>
+              <div class="progress-bar-container">
+                <div class="progress-fill"
+                     style="width: 95%"></div>
+              </div>
+              <div class="progress-meta">
+                <span>Em Atraso</span>
+                <span>5</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Linha de Membros/Frequência/Gráfico -->
+          <section class="row-cards-2col">
+            <div class="col-cards-esq">
+              <div class="progress-card">
+                <div class="progress-header">
+                  <i class="bi bi-person-check"></i>
+                  <h3 class="progress-title">Membros Cadastrados</h3>
+                </div>
+                <div class="progress-amount">100</div>
+                <div class="progress-bar-container">
+                  <div class="progress-fill"
+                       style="width: 67%"></div>
+                </div>
+                <div class="progress-meta">
+                  <span>Meta de Cadastros</span>
+                  <span>150</span>
+                </div>
+              </div>
+
+              <div class="frequency-card">
+                <div class="chart-header">
+                  <i class="bi bi-bar-chart"></i>
+                  <h3 class="chart-title">Frequência Alunos</h3>
+                </div>
+                <div class="frequency-chart-container">
+                  <canvas id="frequenciaChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-cards-dir">
+              <div class="chart-card">
+                <div class="chart-header">
+                  <i class="bi bi-clock"></i>
+                  <h3 class="chart-title">Horários Frequentados</h3>
+                </div>
+                <div class="chart-container">
+                  <canvas id="horariosChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Calendar Sidebar -->
+        <div class="calendar-sidebar">
+          <!-- Calendar -->
+          <div class="calendar-card">
+            <div class="calendar-header">
+              <h2 class="calendar-title">Calendário</h2>
+              <div class="calendar-nav">
+                <button class="nav-btn"
+                        onclick="previousMonth()">
+                  <i class="bi bi-chevron-left"></i>
+                </button>
+                <span class="current-month">Abril</span>
+                <button class="nav-btn"
+                        onclick="nextMonth()">
+                  <i class="bi bi-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="calendar-grid">
+              <div class="calendar-header-day">D</div>
+              <div class="calendar-header-day">S</div>
+              <div class="calendar-header-day">T</div>
+              <div class="calendar-header-day">Q</div>
+              <div class="calendar-header-day">Q</div>
+              <div class="calendar-header-day">S</div>
+              <div class="calendar-header-day">S</div>
+
+              <div class="calendar-day other-month">27</div>
+              <div class="calendar-day other-month">28</div>
+              <div class="calendar-day other-month">29</div>
+              <div class="calendar-day other-month">30</div>
+              <div class="calendar-day other-month">31</div>
+              <div class="calendar-day">1</div>
+              <div class="calendar-day">2</div>
+              <div class="calendar-day">3</div>
+              <div class="calendar-day">4</div>
+              <div class="calendar-day">5</div>
+              <div class="calendar-day">6</div>
+              <div class="calendar-day">7</div>
+              <div class="calendar-day">8</div>
+              <div class="calendar-day">9</div>
+              <div class="calendar-day today">10</div>
+              <div class="calendar-day selected-range">11</div>
+              <div class="calendar-day selected-range">12</div>
+              <div class="calendar-day selected-range">13</div>
+              <div class="calendar-day selected-range">14</div>
+              <div class="calendar-day">15</div>
+              <div class="calendar-day">16</div>
+              <div class="calendar-day">17</div>
+              <div class="calendar-day">18</div>
+              <div class="calendar-day">19</div>
+              <div class="calendar-day">20</div>
+              <div class="calendar-day">21</div>
+              <div class="calendar-day">22</div>
+              <div class="calendar-day">23</div>
+              <div class="calendar-day">24</div>
+              <div class="calendar-day">25</div>
+              <div class="calendar-day">26</div>
+              <div class="calendar-day">27</div>
+              <div class="calendar-day">28</div>
+              <div class="calendar-day">29</div>
+              <div class="calendar-day">30</div>
             </div>
           </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-3">
-            <div class="card-body">
-              <h5 class="card-title">Receita</h5>
-              <h3>R$893,00 <i class="bi bi-arrow-up text-success"></i></h3>
+
+          <!-- Events -->
+          <div class="calendar-card">
+            <h2 class="events-title">Eventos</h2>
+
+            <div class="event-item">
+              <div class="event-date">
+                <div class="event-day">10</div>
+                <div class="event-weekday">Dom</div>
+              </div>
+              <div class="event-details">
+                <div class="event-name">Muay-Thai para Iniciantes</div>
+                <div class="event-time">09:00 às 11:00</div>
+              </div>
+              <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=64&h=64&fit=crop&crop=face"
+                   alt="Instrutor"
+                   class="event-avatar">
             </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-3">
-            <div class="card-body">
-              <h5 class="card-title">Membros Ativos</h5>
-              <h3>95 <i class="bi bi-arrow-up text-success"></i></h3>
+
+            <div class="event-item">
+              <div class="event-date">
+                <div class="event-day">11</div>
+                <div class="event-weekday">Seg</div>
+              </div>
+              <div class="event-details">
+                <div class="event-name">Pilates para Iniciantes</div>
+                <div class="event-time">08:00 às 09:00</div>
+              </div>
+              <img src="https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=64&h=64&fit=crop&crop=face"
+                   alt="Instrutor"
+                   class="event-avatar">
+            </div>
+
+            <div class="event-item">
+              <div class="event-date">
+                <div class="event-day">11</div>
+                <div class="event-weekday">Seg</div>
+              </div>
+              <div class="event-details">
+                <div class="event-name">Yoga para Iniciantes</div>
+                <div class="event-time">08:00 às 09:30</div>
+              </div>
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=64&h=64&fit=crop&crop=face"
+                   alt="Instrutor"
+                   class="event-avatar">
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Gráficos -->
-      <div class="row">
-        <div class="col-md-6">
-          <div class="card mb-3">
-            <div class="card-body">
-              <h5 class="card-title">Receita Mensal</h5>
-              <canvas id="receitaChart"></canvas>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="card mb-3">
-            <div class="card-body">
-              <h5 class="card-title">Horários Frequentados</h5>
-              <canvas id="horariosChart"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Frequência Alunos -->
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">Frequência de Alunos</h5>
-          <canvas id="frequenciaChart"></canvas>
-        </div>
-      </div>
-
-      <!-- Calendário -->
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">Calendário</h5>
-          <div id="calendar"></div>
-        </div>
-      </div>
-
-    </main>
+    </div>
   </div>
-</div>
 
-<!-- JS Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- JS Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<!-- FullCalendar -->
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
-
-<script>
-  // Gráfico de Receita
-  const receitaCtx = document.getElementById('receitaChart').getContext('2d');
-  new Chart(receitaCtx, {
-    type: 'bar',
-    data: {
-      labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-      datasets: [{
-        label: 'Receita (R$)',
-        data: [3000, 4500, 5000, 6500, 7000, 7500],
-        backgroundColor: '#f26522'
-      }]
-    }
-  });
-
-  // Gráfico de Horários
-  const horariosCtx = document.getElementById('horariosChart').getContext('2d');
-  new Chart(horariosCtx, {
-    type: 'pie',
-    data: {
-      labels: ['Manhã', 'Tarde', 'Noite'],
-      datasets: [{
-        label: 'Frequência',
-        data: [20, 35, 45],
-        backgroundColor: ['#ffc107', '#dc3545', '#343a40']
-      }]
-    }
-  });
-
-  // Gráfico de Frequência
-  const frequenciaCtx = document.getElementById('frequenciaChart').getContext('2d');
-  new Chart(frequenciaCtx, {
-    type: 'line',
-    data: {
-      labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-      datasets: [{
-        label: 'Frequência',
-        data: [50, 65, 70, 60, 80, 90, 40],
-        borderColor: '#f26522',
-        backgroundColor: 'rgba(242,101,34,0.2)',
-        fill: true,
-        tension: 0.4
-      }]
-    }
-  });
-
-  // FullCalendar
-  document.addEventListener('DOMContentLoaded', function() {
-    const calendarEl = document.getElementById('calendar');
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth',
-      locale: 'pt-br',
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek'
-      },
-      events: [
-        { title: 'Muay-Thai para Iniciantes', start: '2025-06-10T09:00:00' },
-        { title: 'Pilates para Iniciantes', start: '2025-06-11T08:00:00' },
-        { title: 'Yoga para Iniciantes', start: '2025-06-11T08:30:00' }
-      ]
-    });
-    calendar.render();
-  });
-</script>
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/dashboard.js"></script>
 
 </body>
+
 </html>
