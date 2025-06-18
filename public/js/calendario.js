@@ -1,6 +1,6 @@
 const API_BASE = window.location.hostname === 'localhost'
     ? 'http://localhost:3000'
-    : '/api/eventos';
+    : '/api';
 
 let currentDate = new Date();
 let events = {};
