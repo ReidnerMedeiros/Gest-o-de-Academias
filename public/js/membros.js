@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:3000/api/membros';
+const API_URL = (window.location.hostname === 'localhost')
+  ? 'http://localhost:3000/api/membros'
+  : '/api/membros';
 
 // Função para carregar e listar membros na tabela
 async function listarMembros() {
