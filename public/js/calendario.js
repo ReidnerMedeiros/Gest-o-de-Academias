@@ -7,8 +7,8 @@ let events = {};
 
 async function loadMembrosEPersonais() {
     const [membrosRes, personaisRes] = await Promise.all([
-        fetch(`${API_BASE}/api/membros`),
-        fetch(`${API_BASE}/api/personais`)
+        fetch(`${API_BASE}/membros`),
+        fetch(`${API_BASE}/personais`)
     ]);
 
     const membros = await membrosRes.json();
@@ -27,7 +27,7 @@ async function loadMembrosEPersonais() {
 }
 
 async function loadEvents() {
-    const res = await fetch(`${API_BASE}/api/eventos`);
+    const res = await fetch(`${API_BASE}/eventos`);
     const data = await res.json();
     events = {};
 
@@ -178,7 +178,7 @@ async function saveEvent() {
         personal_id
     };
 
-    const res = await fetch(`${API_BASE}/api/eventos`, {
+    const res = await fetch(`${API_BASE}/eventos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(evento)
@@ -198,7 +198,7 @@ async function saveEvent() {
 
 async function deleteEvent(id) {
     if (!confirm('Tem certeza que deseja excluir este evento?')) return;
-    const res = await fetch(`${API_BASE}/api/eventos/${id}`, { method: 'DELETE'  });
+    const res = await fetch(`${API_BASE}/eventos/${id}`, { method: 'DELETE'  });
     if (res.ok) {
         await loadEvents();
         const date = document.getElementById('eventDate').value;
