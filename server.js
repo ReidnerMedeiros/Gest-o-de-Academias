@@ -32,9 +32,9 @@ app.use('/api/eventos', calendarioController);
 app.use('/api/frequencia', frequenciaController);
 app.use('/api/dashboard', dashboardController);
 
-// Rota de teste
+// Rota para a tela inicial
 app.get('/', (req, res) => {
-  res.send('API Fitness funcionando!');
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 // Inicialização do servidor
