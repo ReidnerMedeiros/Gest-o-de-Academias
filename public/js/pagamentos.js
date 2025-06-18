@@ -1,6 +1,10 @@
-const API_URL = 'http://localhost:3000/api/pagamentos';
-const API_MEMBROS = 'http://localhost:3000/api/membros';
-const API_BASE = 'http://localhost:3000';
+const API_BASE = (window.location.hostname === 'localhost')
+  ? 'http://localhost:3000'
+  : '';
+
+const API_URL = `${API_BASE}/api/pagamentos`;
+const API_MEMBROS = `${API_BASE}/api/membros`;
+
 
 async function carregarMembros() {
   const select = document.getElementById('membroSelect');

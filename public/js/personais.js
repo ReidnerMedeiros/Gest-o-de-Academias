@@ -1,4 +1,6 @@
-const apiBaseUrl = 'http://localhost:3000/api/personais';
+const apiBaseUrl = (window.location.hostname === 'localhost')
+  ? 'http://localhost:3000/api/personais'
+  : '/api/personais';
 
 // Carregar e listar personais
 async function carregarPersonais() {
