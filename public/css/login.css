@@ -1,113 +1,94 @@
 body {
-  background-color: #f8f9fa;
-  height: 100vh;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  min-height: 100vh;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #2d3748;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 320' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%232d3748' fill-opacity='1' d='M0,256L60,213.3C120,171,240,85,360,90.7C480,96,600,192,720,208C840,224,960,160,1080,149.3C1200,139,1320,181,1380,202.7L1440,224L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z'/%3E%3Cpath fill='%23ff6b35' fill-opacity='1' d='M0,192L60,170.7C120,149,240,107,360,101.3C480,96,600,128,720,160C840,192,960,224,1080,197.3C1200,171,1320,85,1380,42.7L1440,0L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z'/%3E%3Cpath fill='%23fbb034' fill-opacity='1' d='M0,288L60,277.3C120,267,240,245,360,218.7C480,192,600,160,720,138.7C840,117,960,107,1080,101.3C1200,96,1320,96,1380,96L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
 }
 
 .login-card {
   background: #fff;
-  padding: 2rem;
-  border-radius: .5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   width: 100%;
   max-width: 400px;
 }
 
+.login-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 20px;
+}
+
+.form-control {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.form-control:focus {
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
+}
+
 .btn-orange {
-  background-color: #f26522;
+  background: linear-gradient(90deg, #ff6b35, #fbb034);
   color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .btn-orange:hover {
-  background-color: #d9561f;
+  background: linear-gradient(90deg, #e55b2b, #f99e1a);
 }
 
-.sidebar {
-  width: 240px;
-  height: 100vh;
-  background: #f26522;
-  color: white;
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
+.toggle-senha {
+  font-size: 12px;
+  color: #718096;
+  border-radius: 8px;
 }
 
-.sidebar-brand {
-  padding: 25px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  align-items: center;
+.toggle-senha:hover {
+  background: #f7fafc;
 }
 
-.brand-icon {
-  width: 30px;
-  height: 30px;
-  background: white;
-  border-radius: 5px;
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.alerta {
+  padding: 10px;
+  background: #fed7d7;
+  border: 1px solid #feb2b2;
+  color: #c53030;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 15px;
+  display: none;
 }
 
-.brand-text {
-  color: #f26522;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.sidebar-menu {
-  flex: 1;
-  padding: 20px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.sidebar-menu a {
-  color: rgba(255, 255, 255, 0.8);
+.esqueci-senha {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 15px;
+  color: #718096;
   text-decoration: none;
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  transition: all 0.3s;
-  border-radius: 25px;
-  margin: 0 10px 8px 10px;
-  font-size: 16px;
-  font-weight: 500;
-  gap: 10px;
 }
 
-.sidebar-menu a.active {
-  background: white;
-  color: #f26522 !important;
-  font-weight: 600;
+.esqueci-senha:hover {
+  color: #ff6b35;
 }
-
-.sidebar-menu a i {
-  margin-right: 10px;
-  width: 20px;
-  color: inherit;
-  font-size: 18px;
-}
-
-.sidebar-menu a.active i {
-  color: #f26522 !important;
-}
-
-.sidebar-menu .logout {
-  margin-top: auto;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.sidebar-menu .logout:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
-} 

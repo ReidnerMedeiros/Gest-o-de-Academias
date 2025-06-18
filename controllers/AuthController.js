@@ -1,12 +1,12 @@
 const { createClient } = require('@supabase/supabase-js');
 const jwt = require('jsonwebtoken');
 
-// 🔐 Variáveis de ambiente
+//  Variáveis de ambiente
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const JWT_SECRET = process.env.JWT_SECRET || 'segredo_super_secreto';
 
-// 🔗 Cria a conexão com o Supabase
+//  Cria a conexão com o Supabase
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const login = async (req, res) => {
