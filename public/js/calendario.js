@@ -1,10 +1,14 @@
+const API_BASE = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : '/api/eventos';
+
 let currentDate = new Date();
 let events = {};
 
 async function loadMembrosEPersonais() {
     const [membrosRes, personaisRes] = await Promise.all([
-        fetch('http://localhost:3000/api/membros'),
-        fetch('http://localhost:3000/api/personais')
+        fetch('${API_BASE}/api/membros'),
+        fetch('${API_BASE}/api/personais')
     ]);
 
     const membros = await membrosRes.json();
