@@ -1,4 +1,9 @@
-body {
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
   background: #f5f5f5;
   font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
 }
@@ -314,35 +319,133 @@ body {
   overflow-y: auto;
 }
 
-@media (max-width: 900px) {
-  .main-content,
-  .top-header {
-    padding: 16px 8px 0 8px;
+
+
+/* RESPONSIVIDADE MOBILE AVANÇADA */
+@media (max-width: 600px) {
+  .main-layout {
+    flex-direction: column;
+    margin: 0 !important;
+    padding: 0 !important;
   }
   .sidebar {
-    width: 70px;
-    min-width: 70px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 80vw;
+    max-width: 320px;
+    height: 100vh;
+    z-index: 2000;
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+    box-shadow: 2px 0 16px rgba(0,0,0,0.15);
     border-radius: 0 16px 16px 0;
-    align-items: center;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  body, html {
+    background: #f5f5f5 !important;
+  }
+  .sidebar-brand {
+    padding: 18px 12px 12px 16px;
   }
   .content-area {
-    margin-left: 80px;
+    margin-left: 0;
+    padding: 0 4vw;
   }
-  .sidebar-menu a {
+  .top-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 8px 10px 8px;
+    margin: 10px 0 0 0;
+  }
+  .page-title {
+    font-size: 1.3rem;
+  }
+  .main-content {
+    padding: 10px 0 0 0;
+    gap: 10px;
+  }
+  .members-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .members-header h3 {
+    font-size: 1.1rem;
+  }
+  .members-actions {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  .members-actions .btn {
+    width: 100%;
+    font-size: 14px;
+    padding: 8px 0;
+  }
+  .card-table {
+    border-radius: 10px;
+    padding: 0;
+  }
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .table th, .table td {
+    font-size: 12px;
+    padding: 10px 4px;
+  }
+  .table-avatar img {
+    width: 32px;
+    height: 32px;
+  }
+  .user-avatar, .notification-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  .modal-dialog {
+    margin: 10px;
+    max-width: 98vw;
+  }
+  .modal-content {
+    border-radius: 10px;
+    padding: 8px;
+  }
+  .menu-mobile-btn {
+    display: flex;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2100;
+    background: #ff6b35;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    align-items: center;
     justify-content: center;
-    padding: 12px 0;
-    font-size: 18px;
-    margin: 0 0 10px 0;
-  }
-  .sidebar-menu a i {
-    margin-right: 0;
-  }
-  .sidebar-brand h4 {
-    display: none;
+    font-size: 26px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    cursor: pointer;
   }
 }
 
-html, body {
-  height: 100%;
-  overflow: hidden;
+/* Exibir botão de menu só em telas pequenas */
+.menu-mobile-btn {
+  display: none;
+}
+@media (max-width: 600px) {
+  .menu-mobile-btn {
+    display: flex;
+  }
+}
+
+/* Esconder botão hambúrguer quando modal estiver aberto */
+.modal.show ~ .menu-mobile-btn,
+body.modal-open .menu-mobile-btn {
+  display: none !important;
 } 
