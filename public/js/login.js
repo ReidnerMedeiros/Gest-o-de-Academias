@@ -9,7 +9,7 @@ if (form) {
         const senha = document.getElementById('senha').value;
         const lembrar = document.getElementById('lembrar').checked;
 
-        // Credenciais do super usuário (exemplo)
+        // Credenciais do super usuário
         const SUPER_USUARIO_EMAIL = "admin@fitness.com";
         const SUPER_USUARIO_SENHA = "123456";
 
