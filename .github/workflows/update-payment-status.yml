@@ -15,4 +15,4 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y postgresql-client
-          psql $SUPABASE_DB_URL -c "CALL atualizar_status_pagamento_pendente();"
+          psql "$SUPABASE_DB_URL" -c "CALL atualizar_status_pagamento_pendente();"
