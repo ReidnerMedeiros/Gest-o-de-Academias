@@ -11,15 +11,19 @@ async function listarMembros() {
         const membros = await res.json();
         tabela.innerHTML = '';
         membros.forEach(membro => {
-            const tr = document.createElement('tr');
+            const corDot = membro.status_pagamento === 'Pago' ? 'green' : 'red';
+            tr = document.createElement('tr');
             tr.innerHTML = `
-      <td>${membro.nome}</td>
-      <td>${membro.idade || ''}</td>
-      <td>${membro.sexo || ''}</td>
-      <td>${membro.email}</td>
-      <td>${membro.telefone || ''}</td>
-      <td><span class="dot green"></span></td>
-    `;
+                <td>${membro.nome}</td>
+                <td>${membro.idade || ''}</td>
+                <td>${membro.sexo || ''}</td>
+                <td>${membro.email}</td>
+                <td>${membro.telefone || ''}</td>
+                <td>
+                  <span class="dot ${corDot}"></span>
+                  ${membro.status_pagamento}
+                </td>
+            `;
             tabela.appendChild(tr);
         });
         total.textContent = membros.length;
