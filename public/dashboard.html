@@ -3,302 +3,223 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dashboard Fitness</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css"
-        rel="stylesheet">
-  <link rel="stylesheet"
-        href="css/dashboard.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/dashboard.css">
 </head>
 
 <body>
+<button class="menu-mobile-btn" onclick="abrirSidebar()" aria-label="Abrir menu">
+  <i class="bi bi-list"></i>
+</button>
 
-  <!-- Botão de menu mobile -->
-  <button class="menu-mobile-btn"
-          onclick="abrirSidebar()"
-          aria-label="Abrir menu">
-    <i class="bi bi-list"></i>
-  </button>
-
-  <div class="main-layout">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="sidebar-brand">
-        <div class="brand-icon">
-          <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png"
-               alt="Logo"
-               style="width:28px;height:28px;object-fit:contain;">
-        </div>
-        <div class="brand-text">FITNESS</div>
+<div class="main-layout">
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="Logo" style="width:28px;height:28px;object-fit:contain;">
       </div>
-      <nav class="sidebar-menu">
-        <a href="dashboard.html"
-           class="menu-item active"><i class="bi bi-house"></i> Dashboard</a>
-        <a href="membros.html"
-           class="menu-item"><i class="bi bi-people-fill"></i> Membros</a>
-        <a href="personais.html"
-           class="menu-item"><i class="bi bi-person-lines-fill"></i> Personais</a>
-        <a href="frequencia.html"
-           class="menu-item"><i class="bi bi-check-square"></i> Frequência</a>
-        <a href="calendario.html"
-           class="menu-item"><i class="bi bi-calendar-event"></i> Calendário</a>
-        <a href="pagamentos.html"
-           class="menu-item"><i class="bi bi-currency-dollar"></i> Pagamentos</a>
-        <a href="configuracao.html"
-           class="menu-item"><i class="bi bi-gear"></i> Configuração</a>
-      </nav>
-      <div class="menu-logout">
-        <a href="login.html"
-           class="menu-item"><i class="bi bi-box-arrow-right"></i> Sair</a>
-      </div>
+      <div class="brand-text">FITNESS</div>
     </div>
+    <nav class="sidebar-menu">
+      <a href="dashboard.html" class="menu-item active"><i class="bi bi-house"></i> Dashboard</a>
+      <a href="membros.html" class="menu-item"><i class="bi bi-people-fill"></i> Membros</a>
+      <a href="personais.html" class="menu-item"><i class="bi bi-person-lines-fill"></i> Personais</a>
+      <a href="frequencia.html" class="menu-item"><i class="bi bi-check-square"></i> Frequência</a>
+      <a href="calendario.html" class="menu-item"><i class="bi bi-calendar-event"></i> Calendário</a>
+      <a href="pagamentos.html" class="menu-item"><i class="bi bi-currency-dollar"></i> Pagamentos</a>
+      <a href="configuracao.html" class="menu-item"><i class="bi bi-gear"></i> Configuração</a>
+    </nav>
+    <div class="menu-logout">
+      <a href="login.html" class="menu-item"><i class="bi bi-box-arrow-right"></i> Sair</a>
+    </div>
+  </div>
 
-    <!-- Content Area -->
-    <div class="content-area">
-      <!-- Top Header -->
-      <header class="top-header">
-        <h1 class="page-title">Dashboard</h1>
-        <div class="header-actions">
-          <button class="notification-btn">
-            <i class="bi bi-bell"></i>
-          </button>
-          <img src="https://randomuser.me/api/portraits/men/32.jpg"
-               alt="User Avatar"
-               class="user-avatar">
-        </div>
-      </header>
+  <div class="content-area">
+    <header class="top-header">
+      <h1 class="page-title">Dashboard</h1>
+      <div class="header-actions">
+        <button class="notification-btn">
+          <i class="bi bi-bell"></i>
+        </button>
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar" class="user-avatar">
+      </div>
+    </header>
 
-      <!-- Dashboard Layout -->
-      <div class="dashboard-layout">
-        <!-- Main Content -->
-        <div class="main-content">
-          <!-- Stats Cards -->
-          <section class="stats-row">
-            <div class="stat-card">
-              <div class="stat-info">
-                <h6>Novos Membros</h6>
-                <div class="stat-value">
-                  12 <i class="bi bi-arrow-up trend-up"></i>
-                </div>
-              </div>
-              <div class="stat-icon">
-                <i class="bi bi-people"></i>
-              </div>
+    <div class="dashboard-layout">
+      <div class="main-content">
+
+        <!-- Stats Cards -->
+        <section class="stats-row">
+          <div class="stat-card">
+            <div class="stat-info">
+              <h6>Novos Membros</h6>
+              <div class="stat-value"></div>
             </div>
-
-            <div class="stat-card">
-              <div class="stat-info">
-                <h6>Receita</h6>
-                <div class="stat-value">
-                  R$893,00 <i class="bi bi-arrow-up trend-up"></i>
-                </div>
-              </div>
-              <div class="stat-icon">
-                <i class="bi bi-graph-up"></i>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <div class="stat-info">
-                <h6>Membros Ativos</h6>
-                <div class="stat-value">
-                  95 <i class="bi bi-arrow-up trend-up"></i>
-                </div>
-              </div>
-              <div class="stat-icon">
-                <i class="bi bi-people-fill"></i>
-              </div>
-            </div>
-          </section>
-
-          <!-- Progress Cards Row -->
-          <section class="progress-row">
-            <div class="progress-card">
-              <div class="progress-header">
-                <i class="bi bi-currency-dollar"></i>
-                <h3 class="progress-title">Receita Mensal</h3>
-              </div>
-              <div class="progress-amount">R$ 6.527,00</div>
-              <div class="progress-bar-container">
-                <div class="progress-fill"
-                     style="width: 65%"></div>
-              </div>
-              <div class="progress-meta">
-                <span>Meta para Junho</span>
-                <span>R$ 10.000</span>
-              </div>
-            </div>
-
-            <div class="progress-card">
-              <div class="progress-header">
-                <i class="bi bi-credit-card"></i>
-                <h3 class="progress-title">Mensalidades</h3>
-              </div>
-              <div class="progress-amount">95 <small style="font-size: 16px; color: #718096; font-weight: 400;">Em Dia</small></div>
-              <div class="progress-bar-container">
-                <div class="progress-fill"
-                     style="width: 95%"></div>
-              </div>
-              <div class="progress-meta">
-                <span>Em Atraso</span>
-                <span>5</span>
-              </div>
-            </div>
-          </section>
-
-          <!-- Linha de Membros/Frequência/Gráfico -->
-          <section class="row-cards-2col">
-            <div class="col-cards-esq">
-              <div class="progress-card">
-                <div class="progress-header">
-                  <i class="bi bi-person-check"></i>
-                  <h3 class="progress-title">Membros Cadastrados</h3>
-                </div>
-                <div class="progress-amount">100</div>
-                <div class="progress-bar-container">
-                  <div class="progress-fill"
-                       style="width: 67%"></div>
-                </div>
-                <div class="progress-meta">
-                  <span>Meta de Cadastros</span>
-                  <span>150</span>
-                </div>
-              </div>
-
-              <div class="frequency-card">
-                <div class="chart-header">
-                  <i class="bi bi-bar-chart"></i>
-                  <h3 class="chart-title">Frequência Alunos</h3>
-                </div>
-                <div class="frequency-chart-container">
-                  <canvas id="frequenciaChart"></canvas>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-cards-dir">
-              <div class="chart-card">
-                <div class="chart-header">
-                  <i class="bi bi-clock"></i>
-                  <h3 class="chart-title">Horários Frequentados</h3>
-                </div>
-                <div class="chart-container">
-                  <canvas id="horariosChart"></canvas>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        <!-- Calendar Sidebar -->
-        <div class="calendar-sidebar">
-          <!-- Calendar -->
-          <div class="calendar-card">
-            <div class="calendar-header">
-              <h2 class="calendar-title">Calendário</h2>
-              <div class="calendar-nav">
-                <button class="nav-btn"
-                        onclick="previousMonth()">
-                  <i class="bi bi-chevron-left"></i>
-                </button>
-                <span class="current-month">Abril</span>
-                <button class="nav-btn"
-                        onclick="nextMonth()">
-                  <i class="bi bi-chevron-right"></i>
-                </button>
-              </div>
-            </div>
-
-            <div class="calendar-grid">
-              <div class="calendar-header-day">D</div>
-              <div class="calendar-header-day">S</div>
-              <div class="calendar-header-day">T</div>
-              <div class="calendar-header-day">Q</div>
-              <div class="calendar-header-day">Q</div>
-              <div class="calendar-header-day">S</div>
-              <div class="calendar-header-day">S</div>
-
-              <div class="calendar-day other-month">27</div>
-              <div class="calendar-day other-month">28</div>
-              <div class="calendar-day other-month">29</div>
-              <div class="calendar-day other-month">30</div>
-              <div class="calendar-day other-month">31</div>
-              <div class="calendar-day">1</div>
-              <div class="calendar-day">2</div>
-              <div class="calendar-day">3</div>
-              <div class="calendar-day">4</div>
-              <div class="calendar-day">5</div>
-              <div class="calendar-day">6</div>
-              <div class="calendar-day">7</div>
-              <div class="calendar-day">8</div>
-              <div class="calendar-day">9</div>
-              <div class="calendar-day today">10</div>
-              <div class="calendar-day selected-range">11</div>
-              <div class="calendar-day selected-range">12</div>
-              <div class="calendar-day selected-range">13</div>
-              <div class="calendar-day selected-range">14</div>
-              <div class="calendar-day">15</div>
-              <div class="calendar-day">16</div>
-              <div class="calendar-day">17</div>
-              <div class="calendar-day">18</div>
-              <div class="calendar-day">19</div>
-              <div class="calendar-day">20</div>
-              <div class="calendar-day">21</div>
-              <div class="calendar-day">22</div>
-              <div class="calendar-day">23</div>
-              <div class="calendar-day">24</div>
-              <div class="calendar-day">25</div>
-              <div class="calendar-day">26</div>
-              <div class="calendar-day">27</div>
-              <div class="calendar-day">28</div>
-              <div class="calendar-day">29</div>
-              <div class="calendar-day">30</div>
+            <div class="stat-icon">
+              <i class="bi bi-people"></i>
             </div>
           </div>
 
-          <!-- Events -->
-          <div class="calendar-card">
-            <h2 class="events-title">Eventos do Mês</h2>
-            <div id="eventos-mes"></div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <h6>Receita</h6>
+              <div class="stat-value"></div>
+            </div>
+            <div class="stat-icon">
+              <i class="bi bi-graph-up"></i>
+            </div>
           </div>
+
+          <div class="stat-card">
+            <div class="stat-info">
+              <h6>Membros Ativos</h6>
+              <div class="stat-value"></div>
+            </div>
+            <div class="stat-icon">
+              <i class="bi bi-people-fill"></i>
+            </div>
+          </div>
+        </section>
+
+        <!-- Progress Cards Row -->
+        <section class="progress-row">
+          <div class="progress-card">
+            <div class="progress-header">
+              <i class="bi bi-currency-dollar"></i>
+              <h3 class="progress-title">Receita Mensal</h3>
+            </div>
+            <div class="progress-amount"></div>
+            <div class="progress-bar-container">
+              <div class="progress-fill"></div>
+            </div>
+            <div class="progress-meta">
+              <span>Meta para Junho</span>
+              <span>R$ 10.000</span>
+            </div>
+          </div>
+
+          <div class="progress-card">
+            <div class="progress-header">
+              <i class="bi bi-credit-card"></i>
+              <h3 class="progress-title">Mensalidades</h3>
+            </div>
+            <div class="progress-amount"></div>
+            <div class="progress-bar-container">
+              <div class="progress-fill"></div>
+            </div>
+            <div class="progress-meta">
+              <span>Em Atraso</span>
+              <span></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Linha de Membros/Frequência/Gráfico -->
+        <section class="row-cards-2col">
+          <div class="col-cards-esq">
+            <div class="progress-card">
+              <div class="progress-header">
+                <i class="bi bi-person-check"></i>
+                <h3 class="progress-title">Membros Cadastrados</h3>
+              </div>
+              <div class="progress-amount"></div>
+              <div class="progress-bar-container">
+                <div class="progress-fill"></div>
+              </div>
+              <div class="progress-meta">
+                <span>Meta de Cadastros</span>
+                <span>150</span>
+              </div>
+            </div>
+
+            <div class="frequency-card">
+              <div class="chart-header">
+                <i class="bi bi-bar-chart"></i>
+                <h3 class="chart-title">Frequência Alunos</h3>
+              </div>
+              <div class="frequency-chart-container">
+                <canvas id="frequenciaChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-cards-dir">
+            <div class="chart-card">
+              <div class="chart-header">
+                <i class="bi bi-clock"></i>
+                <h3 class="chart-title">Horários Frequentados</h3>
+              </div>
+              <div class="chart-container">
+                <canvas id="horariosChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Calendar Sidebar -->
+      <div class="calendar-sidebar">
+        <div class="calendar-card">
+          <div class="calendar-header">
+            <h2 class="calendar-title">Calendário</h2>
+            <div class="calendar-nav">
+              <button class="nav-btn" onclick="previousMonth()">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+              <span class="current-month">Abril</span>
+              <button class="nav-btn" onclick="nextMonth()">
+                <i class="bi bi-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+          <div class="calendar-grid">
+            <div class="calendar-header-day">D</div>
+            <div class="calendar-header-day">S</div>
+            <div class="calendar-header-day">T</div>
+            <div class="calendar-header-day">Q</div>
+            <div class="calendar-header-day">Q</div>
+            <div class="calendar-header-day">S</div>
+            <div class="calendar-header-day">S</div>
+          </div>
+        </div>
+
+        <div class="calendar-card">
+          <h2 class="events-title">Eventos do Mês</h2>
+          <div id="eventos-mes"></div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="js/dashboard.js"></script>
-  <script>
-    function abrirSidebar() {
-      document.querySelector('.sidebar').classList.add('open');
-      // Fecha ao clicar fora
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="js/dashboard.js"></script>
+<script>
+  function abrirSidebar() {
+    document.querySelector('.sidebar').classList.add('open');
+    document.body.addEventListener('click', fecharSidebarAoClicarFora, { once: true });
+  }
+  function fecharSidebarAoClicarFora(e) {
+    const sidebar = document.querySelector('.sidebar');
+    if (!sidebar.contains(e.target) && !e.target.classList.contains('menu-mobile-btn') && !e.target.closest('.menu-mobile-btn')) {
+      sidebar.classList.remove('open');
+    } else {
       document.body.addEventListener('click', fecharSidebarAoClicarFora, { once: true });
     }
-    function fecharSidebarAoClicarFora(e) {
-      const sidebar = document.querySelector('.sidebar');
-      if (!sidebar.contains(e.target) && !e.target.classList.contains('menu-mobile-btn') && !e.target.closest('.menu-mobile-btn')) {
-        sidebar.classList.remove('open');
-      } else {
-        document.body.addEventListener('click', fecharSidebarAoClicarFora, { once: true });
-      }
-    }
-    // Fecha ao clicar em qualquer link do menu
-    document.addEventListener('DOMContentLoaded', function () {
-      document.querySelectorAll('.sidebar .menu-item').forEach(function (link) {
-        link.addEventListener('click', function () {
-          document.querySelector('.sidebar').classList.remove('open');
-        });
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.sidebar .menu-item').forEach(function (link) {
+      link.addEventListener('click', function () {
+        document.querySelector('.sidebar').classList.remove('open');
       });
     });
-  </script>
-
+  });
+</script>
 </body>
 
 </html>

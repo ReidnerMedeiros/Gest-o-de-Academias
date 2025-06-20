@@ -96,32 +96,18 @@ function gerarGridCalendario() {
     const diaSemanaPrimeiro = primeiroDia.getDay();
     const grid = [];
 
-    // Dias do mês anterior para preencher o início
     const diasMesAnterior = new Date(ano, mes, 0).getDate();
     for (let i = diaSemanaPrimeiro - 1; i >= 0; i--) {
-        grid.push({
-            dia: diasMesAnterior - i,
-            outroMes: true
-        });
+        grid.push({ dia: diasMesAnterior - i, outroMes: true });
     }
-    // Dias do mês atual
     for (let d = 1; d <= diasNoMes; d++) {
-        grid.push({
-            dia: d,
-            outroMes: false
-        });
+        grid.push({ dia: d, outroMes: false });
     }
-    // Dias do próximo mês para completar 6 linhas
     while (grid.length % 7 !== 0) {
-        grid.push({
-            dia: grid.length - diasNoMes - diaSemanaPrimeiro + 1,
-            outroMes: true
-        });
+        grid.push({ dia: grid.length - diasNoMes - diaSemanaPrimeiro + 1, outroMes: true });
     }
 
-    // Renderizar grid (sem sobrescrever os dias da semana)
     const gridDiv = document.querySelector('.calendar-grid');
-    // Remove apenas os dias do mês anterior (calendar-day), mantendo os dias da semana
     Array.from(gridDiv.querySelectorAll('.calendar-day, .calendar-day.other-month')).forEach(el => el.remove());
     grid.forEach((info, idx) => {
         const el = document.createElement('div');
@@ -153,11 +139,7 @@ function previousMonth() {
         calendarioData.ano--;
     }
     const hoje = new Date();
-    if (calendarioData.mes === hoje.getMonth() && calendarioData.ano === hoje.getFullYear()) {
-        calendarioData.diaSelecionado = hoje.getDate();
-    } else {
-        calendarioData.diaSelecionado = 1;
-    }
+    calendarioData.diaSelecionado = (calendarioData.mes === hoje.getMonth() && calendarioData.ano === hoje.getFullYear()) ? hoje.getDate() : 1;
     gerarGridCalendario();
     atualizarTituloMes();
     carregarEventosDoMes();
@@ -170,11 +152,7 @@ function nextMonth() {
         calendarioData.ano++;
     }
     const hoje = new Date();
-    if (calendarioData.mes === hoje.getMonth() && calendarioData.ano === hoje.getFullYear()) {
-        calendarioData.diaSelecionado = hoje.getDate();
-    } else {
-        calendarioData.diaSelecionado = 1;
-    }
+    calendarioData.diaSelecionado = (calendarioData.mes === hoje.getMonth() && calendarioData.ano === hoje.getFullYear()) ? hoje.getDate() : 1;
     gerarGridCalendario();
     atualizarTituloMes();
     carregarEventosDoMes();
@@ -187,7 +165,6 @@ async function carregarEventosDoMes() {
         const eventos = await res.json();
         const eventosDiv = document.getElementById('eventos-mes');
         eventosDiv.innerHTML = '';
-        // Filtra eventos do mês/ano selecionado
         const eventosMes = eventos.filter(ev => {
             if (!ev.data) return false;
             const [evAno, evMes] = ev.data.split('-');
@@ -196,14 +173,12 @@ async function carregarEventosDoMes() {
         if (eventosMes.length === 0) {
             eventosDiv.innerHTML = '<div class="text-muted">Nenhum evento para este mês.</div>';
         } else {
-            // Agrupa eventos por dia
             const eventosPorDia = {};
             eventosMes.forEach(ev => {
                 const dia = Number(ev.data.split('-')[2]);
                 if (!eventosPorDia[dia]) eventosPorDia[dia] = [];
                 eventosPorDia[dia].push(ev);
             });
-            // Ordena os dias
             Object.keys(eventosPorDia).sort((a, b) => a - b).forEach(dia => {
                 eventosDiv.innerHTML += `<div class='fw-bold mt-2 mb-1'>Dia ${dia}</div>`;
                 eventosPorDia[dia].forEach(ev => {
@@ -219,8 +194,7 @@ async function carregarEventosDoMes() {
             });
         }
     } catch (err) {
-        const eventosDiv = document.getElementById('eventos-mes');
-        eventosDiv.innerHTML = '<div class="text-danger">Erro ao carregar eventos.</div>';
+        document.getElementById('eventos-mes').innerHTML = '<div class="text-danger">Erro ao carregar eventos.</div>';
     }
 }
 
@@ -228,22 +202,33 @@ async function carregarDashboard() {
     try {
         const res = await fetch('/api/dashboard/stats');
         const stats = await res.json();
-        // Atualizar cards principais
+
+        // Novos Membros
         document.querySelectorAll('.stat-card .stat-value')[0].innerHTML = `${stats.novosMembros} <i class="bi bi-arrow-up trend-up"></i>`;
+
+        // Receita
         document.querySelectorAll('.stat-card .stat-value')[1].innerHTML = `R$${Number(stats.receitaMes).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} <i class="bi bi-arrow-up trend-up"></i>`;
+
+        // Membros Ativos
         document.querySelectorAll('.stat-card .stat-value')[2].innerHTML = `${stats.membrosAtivos} <i class="bi bi-arrow-up trend-up"></i>`;
 
-        // Receita mensal
+        // Receita Mensal
         document.querySelectorAll('.progress-card .progress-amount')[0].innerText = `R$ ${Number(stats.receitaMes).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+
         // Mensalidades pagas
-        document.querySelectorAll('.progress-card .progress-amount')[1].innerHTML = `${stats.mensalidadesPagas} <small style="font-size: 16px; color: #718096; font-weight: 400;">Em Dia</small>`;
-        // Total de membros cadastrados
+        document.querySelectorAll('.progress-card .progress-amount')[1].innerHTML = `${stats.pagos} <small style="font-size: 16px; color: #718096; font-weight: 400;">Em Dia</small>`;
+
+        // Em Atraso
+        document.querySelectorAll('.progress-card')[1].querySelector('.progress-meta span:last-child').innerText = stats.pendentes;
+
+        // Total Membros
         document.querySelectorAll('.progress-card .progress-amount')[2].innerText = stats.totalMembros;
 
-        // Atualizar barras de progresso (exemplo: metas fixas)
+        // Progress bars
         document.querySelectorAll('.progress-bar-container .progress-fill')[0].style.width = `${Math.min((stats.receitaMes / 10000) * 100, 100)}%`;
-        document.querySelectorAll('.progress-bar-container .progress-fill')[1].style.width = `${Math.min((stats.mensalidadesPagas / (stats.totalMembros || 1)) * 100, 100)}%`;
+        document.querySelectorAll('.progress-bar-container .progress-fill')[1].style.width = `${Math.min((stats.pagos / (stats.totalMembros || 1)) * 100, 100)}%`;
         document.querySelectorAll('.progress-bar-container .progress-fill')[2].style.width = `${Math.min((stats.totalMembros / 150) * 100, 100)}%`;
+
     } catch (err) {
         console.error('Erro ao carregar dashboard:', err);
     }
@@ -254,4 +239,4 @@ window.addEventListener('DOMContentLoaded', () => {
     atualizarTituloMes();
     carregarEventosDoMes();
     carregarDashboard();
-}); 
+});

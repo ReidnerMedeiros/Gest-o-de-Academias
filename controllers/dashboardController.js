@@ -12,16 +12,15 @@ router.get('/stats', async (req, res) => {
             .from('membros')
             .select('*', { count: 'exact', head: true });
 
-        // Novos membros no mês atual
-        const inicioMes = new Date();
-        inicioMes.setDate(1);
-        inicioMes.setHours(0, 0, 0, 0);
+        // Novos membros nos últimos 30 dias
+        const trintaDiasAtras = new Date();
+        trintaDiasAtras.setDate(trintaDiasAtras.getDate() - 30);
         const { count: novosMembros } = await supabase
             .from('membros')
             .select('*', { count: 'exact', head: true })
-            .gte('created_at', inicioMes.toISOString());
+            .gte('created_at', trintaDiasAtras.toISOString());
 
-        // Membros ativos (exemplo: todos cadastrados, pode ajustar critério)
+        // Membros ativos (mesmo total)
         const membrosAtivos = totalMembros;
 
         // Pagamentos do mês
@@ -37,14 +36,19 @@ router.get('/stats', async (req, res) => {
             })
             .reduce((soma, p) => soma + Number(p.valor), 0);
 
-        // Receita total
         const receitaTotal = pagamentos.reduce((soma, p) => soma + Number(p.valor), 0);
-
-        // Mensalidades pagas (pagamentos do mês)
         const mensalidadesPagas = pagamentos.filter(p => {
             const d = new Date(p.data_pagamento);
             return d.getMonth() === mesAtual && d.getFullYear() === anoAtual;
         }).length;
+
+        // Status de pagamento dos membros
+        const { data: membrosStatus } = await supabase
+            .from('membros')
+            .select('status_pagamento');
+
+        const pagos = membrosStatus.filter(m => m.status_pagamento === 'Pago').length;
+        const pendentes = membrosStatus.filter(m => m.status_pagamento === 'Pendente').length;
 
         res.json({
             totalMembros,
@@ -52,11 +56,13 @@ router.get('/stats', async (req, res) => {
             membrosAtivos,
             receitaMes,
             receitaTotal,
-            mensalidadesPagas
+            mensalidadesPagas,
+            pagos,
+            pendentes
         });
     } catch (err) {
         res.status(500).json({ error: 'Erro ao buscar estatísticas' });
     }
 });
 
-module.exports = router; 
+module.exports = router;
