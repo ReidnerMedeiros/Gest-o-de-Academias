@@ -38,15 +38,14 @@ Sistema web para gestão administrativa e operacional de academias. Desenvolvido
 
 ```
 academia-system/
-├── public/               # Arquivos estáticos (HTML, CSS, JS)
 ├── controllers/          # Lógica de controle (MVC)
-├── models/               # Modelos de dados
-├── routes/               # Rotas da API Express
+├── .github/              # Configurações e workflows do GitHub Actions
 ├── views/                # Páginas HTML e modais
-├── utils/                # Funções auxiliares
 ├── services/             # Integração com Supabase ou banco local
-├── app.js                # Arquivo principal do Express
-└── config.js             # Configurações e variáveis de ambiente
+├── README.md             # Documentação do projeto
+├── .env                  # Variáveis de ambiente
+├── server.js             # Arquivo principal do Express
+└── config.js             # Configurações gerais da aplicação
 ```
 
 ## 🔐 Autenticação
@@ -54,7 +53,7 @@ academia-system/
 - Utiliza JWT (JSON Web Token)
 - Tokens armazenados em localStorage
 - Rotas protegidas por verificação de token
-- Perfis distintos: Administrador, Recepcionista, Instrutor
+- Perfis distintos: Administrador, Recepcionista
 
 ## ▶️ Como Executar Localmente
 
@@ -84,7 +83,7 @@ node app.js
 ```
 
 5. Acesse:  
-[http://localhost:5000](http://localhost:5000)
+[http://localhost:5000](http://localhost:3000)
 
 ## 📦 Deploy
 
