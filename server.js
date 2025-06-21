@@ -14,6 +14,7 @@ const calendarioController = require('./controllers/calendarioController');
 const frequenciaController = require('./controllers/frequenciaController');
 const dashboardController = require('./controllers/dashboardController');
 
+
 // Instância do app
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,7 +33,9 @@ app.use('/api/eventos', calendarioController);
 app.use('/api/frequencia', frequenciaController);
 app.use('/api/dashboard', dashboardController);
 
+
 // Rota para a tela inicial
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'view', 'login.html'));
 });
