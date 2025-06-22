@@ -23,7 +23,6 @@ const registrar = async (req, res) => {
   }
 
   try {
-    // Verifica se usuário já existe
     const { data: userExists } = await supabase
       .from('usuarios')
       .select('id')
@@ -34,10 +33,8 @@ const registrar = async (req, res) => {
       return res.status(400).json({ mensagem: 'Usuário já cadastrado.' });
     }
 
-    // Hash da senha
     const senhaHash = await bcrypt.hash(senha, 10);
 
-    // Insere novo usuário com senha hash
     const { error } = await supabase
       .from('usuarios')
       .insert([{ nome, email, senha: senhaHash, responsabilidade }]);
@@ -63,7 +60,6 @@ const login = async (req, res) => {
   }
 
   try {
-    // Busca usuário pela tabela usuarios
     const { data: usuario, error } = await supabase
       .from('usuarios')
       .select('*')
@@ -74,13 +70,11 @@ const login = async (req, res) => {
       return res.status(401).json({ mensagem: 'Usuário não encontrado.' });
     }
 
-    // Compara senha com hash armazenado
     const senhaValida = await bcrypt.compare(senha, usuario.senha);
     if (!senhaValida) {
       return res.status(401).json({ mensagem: 'Senha incorreta.' });
     }
 
-    // Gera token JWT
     const token = jwt.sign(
       { userId: usuario.id, email: usuario.email, responsabilidade: usuario.responsabilidade },
       JWT_SECRET,
@@ -102,7 +96,46 @@ const login = async (req, res) => {
   }
 };
 
+/**
+ * Alterar senha do usuário
+ */
+const alterarSenha = async (req, res) => {
+  const { email, novaSenha } = req.body;
+
+  if (!email || !novaSenha) {
+    return res.status(400).json({ mensagem: 'Email e nova senha são obrigatórios.' });
+  }
+
+  try {
+    const { data: usuario, error } = await supabase
+      .from('usuarios')
+      .select('id')
+      .eq('email', email)
+      .single();
+
+    if (error || !usuario) {
+      return res.status(404).json({ mensagem: 'Usuário não encontrado.' });
+    }
+
+    const senhaHash = await bcrypt.hash(novaSenha, 10);
+
+    const { error: updateError } = await supabase
+      .from('usuarios')
+      .update({ senha: senhaHash })
+      .eq('id', usuario.id);
+
+    if (updateError) {
+      return res.status(500).json({ mensagem: 'Erro ao atualizar senha.', error: updateError.message });
+    }
+
+    return res.json({ mensagem: 'Senha atualizada com sucesso.' });
+  } catch (err) {
+    return res.status(500).json({ mensagem: 'Erro interno no servidor.', error: err.message });
+  }
+};
+
 module.exports = {
   registrar,
   login,
+  alterarSenha
 };

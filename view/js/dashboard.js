@@ -1,85 +1,97 @@
 // Gráfico de Horários
-const horariosCtx = document.getElementById('horariosChart').getContext('2d');
-new Chart(horariosCtx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Manhã', 'Tarde', 'Noite'],
-        datasets: [{
-            data: [20, 35, 45],
-            backgroundColor: ['#fbb034', '#ff6b35', '#2d3748'],
-            borderWidth: 0,
-            cutout: '75%'
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'bottom',
-                labels: {
-                    usePointStyle: true,
-                    padding: 20,
-                    font: {
-                        size: 12,
-                        weight: '500'
+async function carregarGraficoHorarios() {
+    try {
+        const res = await fetch('/api/dashboard/horarios');
+        const data = await res.json();
+
+        const horariosCtx = document.getElementById('horariosChart').getContext('2d');
+        new Chart(horariosCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Manhã', 'Tarde', 'Noite'],
+                datasets: [{
+                    data: [data['Manhã'], data['Tarde'], data['Noite']],
+                    backgroundColor: ['#fbb034', '#ff6b35', '#2d3748'],
+                    borderWidth: 0,
+                    cutout: '75%'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: {
+                                size: 12,
+                                weight: '500'
+                            }
+                        }
                     }
                 }
             }
-        }
+        });
+    } catch (err) {
+        console.error('Erro ao carregar gráfico de horários:', err);
     }
-});
+}
 
 // Gráfico de Frequência
-const frequenciaCtx = document.getElementById('frequenciaChart').getContext('2d');
-new Chart(frequenciaCtx, {
-    type: 'bar',
-    data: {
-        labels: ['S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+async function carregarGraficoFrequenciaSemana() {
+  try {
+    const res = await fetch('/api/dashboard/frequencias-semana');
+    const dados = await res.json();
+
+    const labels = dados.map(item => item.dia);
+    const frequencias = dados.map(item => item.frequencia);
+
+    const frequenciaCtx = document.getElementById('frequenciaChart').getContext('2d');
+
+    // Para evitar múltiplas instâncias no canvas, destrua o gráfico anterior se existir
+    if(window.frequenciaChartInstance) {
+      window.frequenciaChartInstance.destroy();
+    }
+
+    window.frequenciaChartInstance = new Chart(frequenciaCtx, {
+      type: 'bar',
+      data: {
+        labels: labels,
         datasets: [{
-            label: 'Alunos',
-            data: [20, 35, 40, 25, 45, 40, 15],
-            backgroundColor: '#ff6b35',
-            borderRadius: 6,
-            borderSkipped: false,
+          label: 'Alunos',
+          data: frequencias,
+          backgroundColor: '#ff6b35',
+          borderRadius: 6,
+          borderSkipped: false,
         }]
-    },
-    options: {
+      },
+      options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: {
-                display: false
-            }
+          legend: { display: false }
         },
         scales: {
-            y: {
-                beginAtZero: true,
-                max: 60,
-                ticks: {
-                    stepSize: 20,
-                    font: {
-                        size: 12
-                    }
-                },
-                grid: {
-                    color: '#f1f2f7'
-                }
-            },
-            x: {
-                grid: {
-                    display: false
-                },
-                ticks: {
-                    font: {
-                        size: 12,
-                        weight: '500'
-                    }
-                }
-            }
+          y: {
+            beginAtZero: true,
+            max: Math.max(...frequencias) + 5, // deixa um espacinho no topo
+            ticks: { stepSize: 5, font: { size: 12 } },
+            grid: { color: '#f1f2f7' }
+          },
+          x: {
+            grid: { display: false },
+            ticks: { font: { size: 12, weight: '500' } }
+          }
         }
-    }
-});
+      }
+    });
+
+  } catch (err) {
+    console.error('Erro ao carregar gráfico de frequência semanal:', err);
+  }
+}
 
 let calendarioData = {
     mes: new Date().getMonth(),
@@ -239,4 +251,6 @@ window.addEventListener('DOMContentLoaded', () => {
     atualizarTituloMes();
     carregarEventosDoMes();
     carregarDashboard();
+    carregarGraficoHorarios();
+    carregarGraficoFrequenciaSemana();
 });

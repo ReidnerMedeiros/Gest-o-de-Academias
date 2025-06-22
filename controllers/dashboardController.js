@@ -65,4 +65,73 @@ router.get('/stats', async (req, res) => {
     }
 });
 
+router.get('/horarios', async (req, res) => {
+    try {
+        // Busca todas as frequências com presenca = true
+        const { data, error } = await supabase
+            .from('frequencias')
+            .select('horario, presenca')
+            .eq('presenca', true);
+
+        if (error) {
+            console.error('Erro ao buscar frequências:', error.message);
+            return res.status(500).json({ error: 'Erro ao buscar frequências' });
+        }
+
+        // Conta as presenças por horário
+        const horarios = {
+            Manhã: 0,
+            Tarde: 0,
+            Noite: 0
+        };
+
+        data.forEach(f => {
+            if (horarios[f.horario] !== undefined) {
+                horarios[f.horario]++;
+            }
+        });
+
+        res.json(horarios);
+    } catch (err) {
+        console.error('Erro no servidor ao processar horários:', err);
+        res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+router.get('/frequencias-semana', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('frequencias')
+      .select('data_aula, presenca')
+      .eq('presenca', true);
+
+    if (error) {
+      console.error('Erro ao buscar frequências:', error.message);
+      return res.status(500).json({ error: 'Erro ao buscar frequências' });
+    }
+
+    // Inicializa o contador dos dias da semana: 0 (Dom) até 6 (Sáb)
+    const frequenciasPorDia = [0,0,0,0,0,0,0];
+
+    data.forEach(item => {
+      const diaSemana = new Date(item.data_aula).getDay(); // 0-6, domingo a sábado
+      frequenciasPorDia[diaSemana]++;
+    });
+
+    // Retornar com labels úteis, começando de segunda (índice 1)
+    const labels = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+    // Retorna objeto com label e quantidade
+    const resultado = labels.map((label, idx) => ({
+      dia: label,
+      frequencia: frequenciasPorDia[idx] || 0
+    }));
+
+    res.json(resultado);
+  } catch (err) {
+    console.error('Erro no servidor ao processar frequências da semana:', err);
+    res.status(500).json({ error: 'Erro no servidor' });
+  }
+});
+
 module.exports = router;
